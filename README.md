@@ -5,7 +5,7 @@ A fast circular ImageView perfect for profile images. This is based on [RoundedI
 
 ![CircleImageView](https://raw.github.com/hdodenhof/CircleImageView/master/screenshot.png)
 
-Compared to other solutions this
+Compared to other solutions this:
 * does **not** create a copy of the original bitmap
 * does **not** use a clipPath which is not hardware accelerated and not anti-aliased
 * does **not** use setXfermode to clip the bitmap and draw twice to the canvas
@@ -31,7 +31,7 @@ Limitations
 * Setters for border color and border width are missing
 * It's not yet on MavenCentral
 
-ChangeLog
+Changelog
 ---------
 * **1.0.0**
     * Initial release
