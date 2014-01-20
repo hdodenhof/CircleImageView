@@ -1,7 +1,5 @@
 package de.hdodenhof.circleimageview;
 
-import de.hdodenhof.circleimageview.R;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
