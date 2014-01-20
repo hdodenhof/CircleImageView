@@ -15,10 +15,6 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-/**
- * Based on RoundedImageView by Vince Mi
- * https://github.com/vinc3m1/RoundedImageView/
- */
 public class CircleImageView extends ImageView {
 
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
