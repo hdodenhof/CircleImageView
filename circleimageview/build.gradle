@@ -3,4 +3,11 @@ apply plugin: 'android-library'
 android {
     compileSdkVersion 19
     buildToolsVersion "19.0.1"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 19
+    }
 }
+
+apply from: 'https://raw.github.com/hdodenhof/gradle-mvn-push/master/gradle-mvn-push.gradle'
