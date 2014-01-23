@@ -12,6 +12,15 @@ Compared to other solutions this:
 
 I didn't split the library into a CircleImageView and a CircleDrawable so it can be used with all kinds of drawables, i.e. a PicassoDrawable from [Picasso](https://github.com/square/picasso) or other non-standard drawables (needs some testing though).
 
+Gradle
+------
+```
+dependencies {
+    ...
+    compile 'de.hdodenhof:circleimageview:1.0.0'
+}
+```
+
 Usage
 -----
 ```xml
@@ -29,7 +38,6 @@ Limitations
 -----------
 * The ScaleType is always CENTER_CROP and you'll get an exception if you try to change it. This is (currently) by design as it's perfectly fine for profile images.
 * Setters for border color and border width are missing
-* It's not yet on MavenCentral
 
 Changelog
 ---------
