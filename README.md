@@ -5,10 +5,10 @@ A fast circular ImageView perfect for profile images. This is based on [RoundedI
 
 ![CircleImageView](https://raw.github.com/hdodenhof/CircleImageView/master/screenshot.png)
 
-Compared to other solutions this:
-* does **not** create a copy of the original bitmap
-* does **not** use a clipPath which is not hardware accelerated and not anti-aliased
-* does **not** use setXfermode to clip the bitmap and draw twice to the canvas
+It uses a BitmapShader and **does not**:
+* create a copy of the original bitmap
+* use a clipPath (which is neither hardware accelerated nor anti-aliased)
+* use setXfermode to clip the bitmap (which means drawing twice to the canvas)
 
 I didn't split the library into a CircleImageView and a CircleDrawable so it can be used with all kinds of drawables, i.e. a PicassoDrawable from [Picasso](https://github.com/square/picasso) or other non-standard drawables (needs some testing though).
 
