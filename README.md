@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:1.0.0'
+    compile 'de.hdodenhof:circleimageview:1.0.1'
 }
 ```
 
@@ -41,6 +41,8 @@ Limitations
 
 Changelog
 ---------
+* **1.0.1**
+    * Prevent crash due to OutOfMemoryError
 * **1.0.0**
     * Initial release
 
