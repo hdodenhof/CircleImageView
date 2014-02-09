@@ -107,6 +107,25 @@ public class CircleImageView extends ImageView {
         setup();
     }
 
+    public void setBorderColor(int borderColor) {
+        if (borderColor == mBorderColor.getDefaultColor()){
+            return;
+        }
+
+        mBorderColor = ColorStateList.valueOf(borderColor);
+        mBorderPaint.setColor(mBorderColor.getDefaultColor());
+        invalidate();
+    }
+
+    public void setBorderWidth(int borderWidth) {
+        if (borderWidth == mBorderWidth){
+            return;
+        }
+
+        mBorderWidth = borderWidth;
+        setup();
+    }
+
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
