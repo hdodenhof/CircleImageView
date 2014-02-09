@@ -102,6 +102,10 @@ public class CircleImageView extends ImageView {
         setup();
     }
 
+    public int getBorderColor() {
+        return mBorderColor;
+    }
+
     public void setBorderColor(int borderColor) {
         if (borderColor == mBorderColor) {
             return;
@@ -110,6 +114,10 @@ public class CircleImageView extends ImageView {
         mBorderColor = borderColor;
         mBorderPaint.setColor(mBorderColor);
         invalidate();
+    }
+
+    public int getBorderWidth() {
+        return mBorderWidth;
     }
 
     public void setBorderWidth(int borderWidth) {
