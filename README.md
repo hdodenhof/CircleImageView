@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:1.0.1'
+    compile 'de.hdodenhof:circleimageview:1.1.0'
 }
 ```
 
@@ -37,10 +37,12 @@ Usage
 Limitations
 -----------
 * The ScaleType is always CENTER_CROP and you'll get an exception if you try to change it. This is (currently) by design as it's perfectly fine for profile images.
-* Setters for border color and border width are missing
 
 Changelog
 ---------
+* **1.1.0**
+    * Add support for ColorDrawables
+    * Add getters and setters for border color and border width
 * **1.0.1**
     * Prevent crash due to OutOfMemoryError
 * **1.0.0**
