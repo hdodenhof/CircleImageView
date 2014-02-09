@@ -1,7 +1,6 @@
 package de.hdodenhof.circleimageview;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -34,7 +33,7 @@ public class CircleImageView extends ImageView {
     private final Paint mBitmapPaint = new Paint();
     private final Paint mBorderPaint = new Paint();
 
-    private ColorStateList mBorderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
+    private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
 
     private Bitmap mBitmap;
@@ -63,13 +62,9 @@ public class CircleImageView extends ImageView {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
 
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, 0);
-        mBorderColor = a.getColorStateList(R.styleable.CircleImageView_border_color);
+        mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);
 
         a.recycle();
-
-        if (mBorderColor == null){
-            mBorderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
-        }
 
         mReady = true;
 
@@ -108,12 +103,12 @@ public class CircleImageView extends ImageView {
     }
 
     public void setBorderColor(int borderColor) {
-        if (borderColor == mBorderColor.getDefaultColor()){
+        if (borderColor == mBorderColor){
             return;
         }
 
-        mBorderColor = ColorStateList.valueOf(borderColor);
-        mBorderPaint.setColor(mBorderColor.getDefaultColor());
+        mBorderColor = borderColor;
+        mBorderPaint.setColor(mBorderColor);
         invalidate();
     }
 
@@ -191,7 +186,7 @@ public class CircleImageView extends ImageView {
 
         mBorderPaint.setStyle(Paint.Style.STROKE);
         mBorderPaint.setAntiAlias(true);
-        mBorderPaint.setColor(mBorderColor.getDefaultColor());
+        mBorderPaint.setColor(mBorderColor);
         mBorderPaint.setStrokeWidth(mBorderWidth);
 
         mBitmapHeight = mBitmap.getHeight();
