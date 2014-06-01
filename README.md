@@ -37,6 +37,7 @@ Usage
 Limitations
 -----------
 * The ScaleType is always CENTER_CROP and you'll get an exception if you try to change it. This is (currently) by design as it's perfectly fine for profile images.
+* If you use Picasso for fetching images, you need to set the `noFade()` option to avoid messed up images. If you want to keep the fadeIn animation, you have to fetch the image into a `Target` and apply a custom animation when setting it as source for the `CircleImageView` in `onBitmapLoaded()`.
 
 Changelog
 ---------
