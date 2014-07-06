@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:1.1.0'
+    compile 'de.hdodenhof:circleimageview:1.1.1'
 }
 ```
 
@@ -41,6 +41,8 @@ Limitations
 
 Changelog
 ---------
+* **1.1.1**
+    * Fix border being shown although border width is set to 0
 * **1.1.0**
     * Add support for ColorDrawables
     * Add getters and setters for border color and border width
