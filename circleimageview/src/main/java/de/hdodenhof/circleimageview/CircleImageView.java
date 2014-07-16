@@ -49,6 +49,8 @@ public class CircleImageView extends ImageView {
 
     public CircleImageView(Context context) {
         super(context);
+
+        init();
     }
 
     public CircleImageView(Context context, AttributeSet attrs) {
@@ -57,7 +59,6 @@ public class CircleImageView extends ImageView {
 
     public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        super.setScaleType(SCALE_TYPE);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
 
@@ -66,6 +67,11 @@ public class CircleImageView extends ImageView {
 
         a.recycle();
 
+        init();
+    }
+
+    private void init() {
+        super.setScaleType(SCALE_TYPE);
         mReady = true;
 
         if (mSetupPending) {
