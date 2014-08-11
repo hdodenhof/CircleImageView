@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:1.1.1'
+    compile 'de.hdodenhof:circleimageview:1.2.0'
 }
 ```
 
@@ -41,6 +41,9 @@ Limitations
 
 Changelog
 ---------
+* **1.2.0**
+    * Add support for setImageURI(Uri uri)
+    * Fix view not being initialized when using CircleImageView(Context context)
 * **1.1.1**
     * Fix border being shown although border width is set to 0
 * **1.1.0**
