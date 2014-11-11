@@ -41,5 +41,26 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="@dimen/base_padding"
+        android:background="#ffaa">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/hugh"
+            android:clickable="true"
+            app:border_width="2dp"
+            app:border_color="@color/light"
+            app:selector_color="@color/teal_a200"
+            app:selector_border_color="@color/teal_500"
+            />
+
+    </RelativeLayout>
+
 
 </LinearLayout>

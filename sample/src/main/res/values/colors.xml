@@ -3,5 +3,8 @@
 
     <color name="dark">#FF222222</color>
     <color name="light">#FFEEEEEE</color>
+    <color name="white_50">#7fFFFFFF</color>
+    <color name="teal_a200">#777fffda</color>
+    <color name="teal_500">#009688</color>
 
 </resources>

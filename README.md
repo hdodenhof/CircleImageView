@@ -34,6 +34,14 @@ Usage
     app:border_color="#FF000000"/>
 ```
 
+Attributes
+----------
+
+* ```app:border_width``` (dimension)
+* ```app:border_color``` (color)
+* ```app:selector_color``` (color)
+* ```app:selector_border_color``` (color)
+
 Limitations
 -----------
 * The ScaleType is always CENTER_CROP and you'll get an exception if you try to change it. This is (currently) by design as it's perfectly fine for profile images.
@@ -41,6 +49,8 @@ Limitations
 
 Changelog
 ---------
+* **1.3.0**
+    * Added selector if ImageView is clickable
 * **1.2.0**
     * Add support for setImageURI(Uri uri)
     * Fix view not being initialized when using CircleImageView(Context context)
