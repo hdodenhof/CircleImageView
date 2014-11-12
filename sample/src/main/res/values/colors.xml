@@ -6,5 +6,7 @@
     <color name="white_50">#7fFFFFFF</color>
     <color name="teal_a200">#777fffda</color>
     <color name="teal_500">#009688</color>
+    <color name="purple">#ffaa</color>
+
 
 </resources>

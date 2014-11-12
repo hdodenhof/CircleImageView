@@ -46,9 +46,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="@dimen/base_padding"
-        android:background="#ffaa">
+        android:background="@color/purple">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/clickable_circle_image"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_centerInParent="true"
@@ -59,6 +60,13 @@
             app:selector_color="@color/teal_a200"
             app:selector_border_color="@color/teal_500"
             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="@string/clickable_image_view"/>
 
     </RelativeLayout>
 

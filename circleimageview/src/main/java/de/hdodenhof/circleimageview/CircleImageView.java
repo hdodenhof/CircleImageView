@@ -244,7 +244,7 @@ public class CircleImageView extends ImageView {
 
         setup();
 
-        return super.onTouchEvent(event);
+        return true;
     }
 
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
