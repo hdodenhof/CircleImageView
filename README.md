@@ -33,6 +33,7 @@ Usage
     app:border_width="2dp"
     app:border_color="#FF000000"/>
 ```
+![CircleImageView](https://raw.githubusercontent.com/SimoneBellotti/CircleImageView/master/screenshot.gif)
 
 Attributes
 ----------
