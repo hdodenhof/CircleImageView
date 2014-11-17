@@ -94,6 +94,13 @@ public class CircleImageView extends ImageView {
     }
 
     @Override
+    public void setAdjustViewBounds(boolean adjustViewBounds) {
+        if (adjustViewBounds) {
+            throw new IllegalArgumentException("adjustViewBounds not supported.");
+        }
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         if (getDrawable() == null) {
             return;
