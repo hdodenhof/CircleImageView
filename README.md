@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:1.2.0'
+    compile 'de.hdodenhof:circleimageview:1.2.1'
 }
 ```
 
@@ -43,6 +43,8 @@ Limitations
 
 Changelog
 ---------
+* **1.2.1**
+    * Fix ColorDrawables not being rendered properly on Lollipop
 * **1.2.0**
     * Add support for setImageURI(Uri uri)
     * Fix view not being initialized when using CircleImageView(Context context)
