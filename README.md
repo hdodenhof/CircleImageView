@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:1.2.0'
+    compile 'de.hdodenhof:circleimageview:1.2.1'
 }
 ```
 
@@ -46,12 +46,14 @@ Attributes
 Limitations
 -----------
 * The ScaleType is always CENTER_CROP and you'll get an exception if you try to change it. This is (currently) by design as it's perfectly fine for profile images.
+* Enabling `adjustViewBounds` is not supported as this requires an unsupported ScaleType
 * If you use Picasso for fetching images, you need to set the `noFade()` option to avoid messed up images. If you want to keep the fadeIn animation, you have to fetch the image into a `Target` and apply a custom animation when setting it as source for the `CircleImageView` in `onBitmapLoaded()`.
+* Using a `TransitionDrawable` with `CircleImageView` doesn't work properly and leads to messed up images.
 
 Changelog
 ---------
-* **1.3.0**
-    * Added selector if ImageView is clickable
+* **1.2.1**
+    * Fix ColorDrawables not being rendered properly on Lollipop
 * **1.2.0**
     * Add support for setImageURI(Uri uri)
     * Fix view not being initialized when using CircleImageView(Context context)
