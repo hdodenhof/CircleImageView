@@ -27,6 +27,9 @@ public class CircleImageView extends ImageView {
     private static final int DEFAULT_BORDER_WIDTH = 0;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
 
+    private static final int DEFAULT_PRESSED_COLOR = Color.TRANSPARENT;
+    private static final int DEFAULT_BORDER_PRESSED_COLOR = Color.TRANSPARENT;
+
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect = new RectF();
 
@@ -34,8 +37,14 @@ public class CircleImageView extends ImageView {
     private final Paint mBitmapPaint = new Paint();
     private final Paint mBorderPaint = new Paint();
 
+    private final Paint mPressedPaint = new Paint();
+    private final Paint mBorderPressedPaint = new Paint();
+
     private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
+
+    private int mPressedColor = DEFAULT_PRESSED_COLOR;
+    private int mBorderPressedColor = DEFAULT_BORDER_PRESSED_COLOR;
 
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
@@ -66,6 +75,9 @@ public class CircleImageView extends ImageView {
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);
         mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);
 
+        mPressedColor = a.getColor(R.styleable.CircleImageView_pressed_color, DEFAULT_PRESSED_COLOR);
+        mBorderPressedColor = a.getColor(R.styleable.CircleImageView_border_pressed_color, DEFAULT_BORDER_PRESSED_COLOR);
+
         a.recycle();
 
         init();
@@ -73,6 +85,7 @@ public class CircleImageView extends ImageView {
 
     private void init() {
         super.setScaleType(SCALE_TYPE);
+        super.setClickable(true);
         mReady = true;
 
         if (mSetupPending) {
@@ -107,8 +120,15 @@ public class CircleImageView extends ImageView {
         }
 
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);
+        if (isPressed()) { // hit state
+            canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mPressedPaint);
+        }
+
         if (mBorderWidth != 0) {
             canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
+            if (isPressed()) { // hit state
+                canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPressedPaint);
+            }
         }
     }
 
@@ -116,6 +136,12 @@ public class CircleImageView extends ImageView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         setup();
+    }
+
+    @Override
+    public void setPressed(boolean pressed) {
+        super.setPressed(pressed);
+        invalidate();
     }
 
     public int getBorderColor() {
@@ -129,6 +155,34 @@ public class CircleImageView extends ImageView {
 
         mBorderColor = borderColor;
         mBorderPaint.setColor(mBorderColor);
+        invalidate();
+    }
+
+    public int getBorderPressedColor() {
+        return mBorderPressedColor;
+    }
+
+    public void setBorderPressedColor(int borderPressedColor) {
+        if (borderPressedColor == mBorderPressedColor) {
+            return;
+        }
+
+        mBorderPressedColor = borderPressedColor;
+        mBorderPressedPaint.setColor(mBorderPressedColor);
+        invalidate();
+    }
+
+    public int getPressedColor() {
+        return mPressedColor;
+    }
+
+    public void setPressedColor(int pressedColor) {
+        if (pressedColor == mPressedColor) {
+            return;
+        }
+
+        mPressedColor = pressedColor;
+        mPressedPaint.setColor(mPressedColor);
         invalidate();
     }
 
@@ -219,6 +273,15 @@ public class CircleImageView extends ImageView {
         mBorderPaint.setAntiAlias(true);
         mBorderPaint.setColor(mBorderColor);
         mBorderPaint.setStrokeWidth(mBorderWidth);
+
+        mBorderPressedPaint.setStyle(Paint.Style.STROKE);
+        mBorderPressedPaint.setAntiAlias(true);
+        mBorderPressedPaint.setColor(mBorderPressedColor);
+        mBorderPressedPaint.setStrokeWidth(mBorderWidth);
+
+        mPressedPaint.setStyle(Paint.Style.FILL);
+        mPressedPaint.setAntiAlias(true);
+        mPressedPaint.setColor(mPressedColor);
 
         mBitmapHeight = mBitmap.getHeight();
         mBitmapWidth = mBitmap.getWidth();
