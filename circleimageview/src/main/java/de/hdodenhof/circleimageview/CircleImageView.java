@@ -60,6 +60,7 @@ public class CircleImageView extends ImageView {
 
     private boolean mReady;
     private boolean mSetupPending;
+    private boolean mIsCircularTransformationDisabled;
 
     public CircleImageView(Context context) {
         super(context);
@@ -118,6 +119,11 @@ public class CircleImageView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (mIsCircularTransformationDisabled) {
+            super.onDraw(canvas); // no transformation, i.e. delegate to ImageView
+            return;
+        }
+
         if (getDrawable() == null) {
             return;
         }
@@ -184,6 +190,10 @@ public class CircleImageView extends ImageView {
         mSelectorColor = selectorColor;
         mSelectorColorFilter = new PorterDuffColorFilter(mSelectorColor, PorterDuff.Mode.SRC_ATOP);
         setup();
+    }
+
+    public void setIsCircularTransformationDisabled(boolean isCircularTransformationDisabled) {
+        mIsCircularTransformationDisabled = isCircularTransformationDisabled;
     }
 
     @Override
