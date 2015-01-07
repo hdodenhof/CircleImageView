@@ -33,6 +33,15 @@ Usage
     app:border_width="2dp"
     app:border_color="#FF000000"/>
 ```
+![CircleImageView](https://raw.githubusercontent.com/SimoneBellotti/CircleImageView/master/screenshot.gif)
+
+Attributes
+----------
+
+* ```app:border_width``` (dimension)
+* ```app:border_color``` (color)
+* ```app:selector_color``` (color)
+* ```app:selector_border_color``` (color)
 
 Limitations
 -----------

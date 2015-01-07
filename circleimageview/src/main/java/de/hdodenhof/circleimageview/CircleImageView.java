@@ -6,8 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,6 +18,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 
 public class CircleImageView extends ImageView {
@@ -22,10 +26,13 @@ public class CircleImageView extends ImageView {
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
 
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
-    private static final int COLORDRAWABLE_DIMENSION = 2;
+    private static final int COLORDRAWABLE_DIMENSION = 1;
 
     private static final int DEFAULT_BORDER_WIDTH = 0;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
+    private static final int DEFAULT_SELECTOR_COLOR = Color.WHITE;
+    private static final int DEFAULT_SELECTOR_BORDER_COLOR = Color.RED;
+
 
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect = new RectF();
@@ -36,6 +43,10 @@ public class CircleImageView extends ImageView {
 
     private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
+    private int mSelectorBorderColor = DEFAULT_SELECTOR_BORDER_COLOR;
+    private int mSelectorColor = DEFAULT_SELECTOR_COLOR;
+    private ColorFilter mSelectorColorFilter;
+
 
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
@@ -44,6 +55,8 @@ public class CircleImageView extends ImageView {
 
     private float mDrawableRadius;
     private float mBorderRadius;
+
+    private boolean mIsSelected = false;
 
     private boolean mReady;
     private boolean mSetupPending;
@@ -65,6 +78,9 @@ public class CircleImageView extends ImageView {
 
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);
         mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);
+        mSelectorColor = a.getColor(R.styleable.CircleImageView_selector_color, DEFAULT_SELECTOR_COLOR);
+        mSelectorColorFilter = new PorterDuffColorFilter(mSelectorColor, PorterDuff.Mode.SRC_ATOP);
+        mSelectorBorderColor = a.getColor(R.styleable.CircleImageView_selector_border_color, DEFAULT_SELECTOR_BORDER_COLOR);
 
         a.recycle();
 
@@ -145,6 +161,31 @@ public class CircleImageView extends ImageView {
         setup();
     }
 
+    public int getSelectorBorderColor() {
+        return mSelectorBorderColor;
+    }
+
+    public void setSelectorBorderColor(int selectorBorderColor) {
+        if (mSelectorBorderColor == selectorBorderColor) {
+            return;
+        }
+        mSelectorBorderColor = selectorBorderColor;
+        setup();
+    }
+
+    public ColorFilter getSelectorColor() {
+        return mSelectorColorFilter;
+    }
+
+    public void setSelectorColor(int selectorColor) {
+        if (mSelectorColor == selectorColor) {
+            return;
+        }
+        mSelectorColor = selectorColor;
+        mSelectorColorFilter = new PorterDuffColorFilter(mSelectorColor, PorterDuff.Mode.SRC_ATOP);
+        setup();
+    }
+
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
@@ -171,6 +212,46 @@ public class CircleImageView extends ImageView {
         super.setImageURI(uri);
         mBitmap = getBitmapFromDrawable(getDrawable());
         setup();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if (!isClickable()) {
+            mIsSelected = false;
+            return super.onTouchEvent(event);
+        }
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mIsSelected = true;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+
+                int extraTouchArea = 13; //add an extra touch area
+
+                x += extraTouchArea;
+                y += extraTouchArea;
+
+                if (!mDrawableRect.contains(x, y)) {
+                    mIsSelected = false;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                mIsSelected = false;
+                break;
+            case MotionEvent.ACTION_OUTSIDE:
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                mIsSelected = false;
+                break;
+        }
+
+        setup();
+
+        return super.onTouchEvent(event);
     }
 
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
@@ -217,8 +298,17 @@ public class CircleImageView extends ImageView {
 
         mBorderPaint.setStyle(Paint.Style.STROKE);
         mBorderPaint.setAntiAlias(true);
-        mBorderPaint.setColor(mBorderColor);
-        mBorderPaint.setStrokeWidth(mBorderWidth);
+
+        if (isClickable() && mIsSelected) {
+            mBitmapPaint.setColorFilter(mSelectorColorFilter);
+            mBorderPaint.setColor(mSelectorBorderColor);
+        } else {
+            mBitmapPaint.setColorFilter(null);
+            mBorderPaint.setColor(mBorderColor);
+            mBorderPaint.setStrokeWidth(mBorderWidth);
+        }
+//        mBorderPaint.setColor(mBorderColor);
+//        mBorderPaint.setStrokeWidth(mBorderWidth);
 
         mBitmapHeight = mBitmap.getHeight();
         mBitmapWidth = mBitmap.getWidth();

@@ -2,5 +2,6 @@
 <resources>
 
     <string name="app_name">CircleImageView Sample</string>
+    <string name="clickable_image_view">Clickable</string>
 
 </resources>
