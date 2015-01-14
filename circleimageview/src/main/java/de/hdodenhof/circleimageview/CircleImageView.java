@@ -183,7 +183,8 @@ public class CircleImageView extends ImageView {
         }
 
         mColorFilter = cf;
-        setup();
+        mBitmapPaint.setColorFilter(mColorFilter);
+        invalidate();
     }
 
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
@@ -227,9 +228,6 @@ public class CircleImageView extends ImageView {
 
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setShader(mBitmapShader);
-        if (mColorFilter != null) {
-            mBitmapPaint.setColorFilter(mColorFilter);
-        }
 
         mBorderPaint.setStyle(Paint.Style.STROKE);
         mBorderPaint.setAntiAlias(true);
