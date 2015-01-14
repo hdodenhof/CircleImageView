@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -44,6 +45,8 @@ public class CircleImageView extends ImageView {
 
     private float mDrawableRadius;
     private float mBorderRadius;
+
+    private ColorFilter mColorFilter;
 
     private boolean mReady;
     private boolean mSetupPending;
@@ -173,6 +176,16 @@ public class CircleImageView extends ImageView {
         setup();
     }
 
+    @Override
+    public void setColorFilter(ColorFilter cf) {
+        if (cf == mColorFilter) {
+            return;
+        }
+
+        mColorFilter = cf;
+        setup();
+    }
+
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
         if (drawable == null) {
             return null;
@@ -214,6 +227,9 @@ public class CircleImageView extends ImageView {
 
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setShader(mBitmapShader);
+        if (mColorFilter != null) {
+            mBitmapPaint.setColorFilter(mColorFilter);
+        }
 
         mBorderPaint.setStyle(Paint.Style.STROKE);
         mBorderPaint.setAntiAlias(true);
