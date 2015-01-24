@@ -135,6 +135,10 @@ public class CircleImageView extends ImageView {
         invalidate();
     }
 
+    public void setBorderColorResource(int borderColorRes) {
+        setBorderColor(getContext().getResources().getColor(borderColorRes));
+    }
+
     public int getBorderWidth() {
         return mBorderWidth;
     }
