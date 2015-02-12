@@ -1,5 +1,6 @@
 package de.hdodenhof.circleimageview;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -26,7 +28,10 @@ public class CircleImageView extends ImageView {
     private static final int COLORDRAWABLE_DIMENSION = 2;
 
     private static final int DEFAULT_BORDER_WIDTH = 0;
-    private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
+    private static final int DEFAULT_SHADOW_COLOR = Color.BLACK;
+
+    private static final int DEFAULT_SHADOW_WIDTH = 0;
+    private static final int DEFAULT_BORDER_COLOR = Color.DKGRAY;
 
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect = new RectF();
@@ -37,6 +42,9 @@ public class CircleImageView extends ImageView {
 
     private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
+
+    private int mShadowColor = DEFAULT_SHADOW_COLOR;
+    private int mShadowWidth = DEFAULT_SHADOW_WIDTH;
 
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
@@ -65,11 +73,15 @@ public class CircleImageView extends ImageView {
         super(context, attrs, defStyle);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
+        try {
+            mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);
+            mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);
 
-        mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);
-        mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);
-
-        a.recycle();
+            mShadowWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_shadow_width, DEFAULT_SHADOW_WIDTH);
+            mShadowColor = a.getColor(R.styleable.CircleImageView_shadow_color, DEFAULT_SHADOW_COLOR);
+        } finally {
+            a.recycle();
+        }
 
         init();
     }
@@ -103,16 +115,22 @@ public class CircleImageView extends ImageView {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onDraw(Canvas canvas) {
         if (getDrawable() == null) {
             return;
         }
 
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);
         if (mBorderWidth != 0) {
+            if (mShadowWidth != 0) {
+                mBorderPaint.setShadowLayer(mShadowWidth, 0, 0, mShadowColor);
+                setLayerType(LAYER_TYPE_SOFTWARE, null);
+            }
             canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
         }
+        // In order to hide the inner shadow of border, draw bitmap last.
+        canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);
     }
 
     @Override
@@ -237,10 +255,12 @@ public class CircleImageView extends ImageView {
         mBitmapHeight = mBitmap.getHeight();
         mBitmapWidth = mBitmap.getWidth();
 
-        mBorderRect.set(0, 0, getWidth(), getHeight());
+
+        mBorderRect.set(mShadowWidth, mShadowWidth, getWidth() - mShadowWidth, getHeight() - mShadowWidth);
         mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);
 
-        mDrawableRect.set(mBorderWidth, mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
+        int outerWidth = mBorderWidth + mShadowWidth;
+        mDrawableRect.set(outerWidth, outerWidth, getWidth() - outerWidth, getHeight() - outerWidth);
         mDrawableRadius = Math.min(mDrawableRect.height() / 2, mDrawableRect.width() / 2);
 
         updateShaderMatrix();

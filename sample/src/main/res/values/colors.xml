@@ -3,5 +3,5 @@
 
     <color name="dark">#FF222222</color>
     <color name="light">#FFEEEEEE</color>
-
+    <color name="red">#FFFF0000</color>
 </resources>

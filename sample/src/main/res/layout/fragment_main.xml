@@ -20,7 +20,9 @@
             android:layout_centerInParent="true"
             android:src="@drawable/hugh"
             app:border_width="2dp"
-            app:border_color="@color/dark" />
+            app:border_color="@color/dark"
+            app:shadow_width="2dp"
+            app:shadow_color="@color/red" />
 
     </RelativeLayout>
 
