@@ -34,6 +34,17 @@ Usage
     app:border_color="#FF000000"/>
 ```
 
+To paint a circular fill/background color (only useful if the image contains transparent areas)
+```xml
+<de.hdodenhof.circleimageview.CircleImageView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/profile_image"
+    android:layout_width="96dp"
+    android:layout_height="96dp"
+    android:src="@drawable/profile"
+    app:fill_color="#FF0000"/>
+```
+
 Limitations
 -----------
 * The ScaleType is always CENTER_CROP and you'll get an exception if you try to change it. This is (currently) by design as it's perfectly fine for profile images.
