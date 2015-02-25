@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:1.2.1'
+    compile 'de.hdodenhof:circleimageview:1.2.2'
 }
 ```
 
@@ -43,6 +43,8 @@ Limitations
 
 Changelog
 ---------
+* **1.2.2**
+    * Add ColorFilter support
 * **1.2.1**
     * Fix ColorDrawables not being rendered properly on Lollipop
 * **1.2.0**
