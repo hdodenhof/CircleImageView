@@ -27,6 +27,7 @@ public class CircleImageView extends ImageView {
 
     private static final int DEFAULT_BORDER_WIDTH = 0;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
+    private static final int DEFAULT_FILL_COLOR = Color.TRANSPARENT;
 
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect = new RectF();
@@ -34,9 +35,11 @@ public class CircleImageView extends ImageView {
     private final Matrix mShaderMatrix = new Matrix();
     private final Paint mBitmapPaint = new Paint();
     private final Paint mBorderPaint = new Paint();
+    private final Paint mFillPaint = new Paint();
 
     private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
+    private int mFillColor = DEFAULT_FILL_COLOR;
 
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
@@ -68,6 +71,7 @@ public class CircleImageView extends ImageView {
 
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);
         mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);
+        mFillColor = a.getColor(R.styleable.CircleImageView_fill_color, DEFAULT_FILL_COLOR);
 
         a.recycle();
 
@@ -109,6 +113,10 @@ public class CircleImageView extends ImageView {
             return;
         }
 
+        if (mFillColor != Color.TRANSPARENT) {
+            //only draw fill color if color is not transparent
+            canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mFillPaint);
+        }
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);
         if (mBorderWidth != 0) {
             canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
@@ -132,6 +140,28 @@ public class CircleImageView extends ImageView {
 
         mBorderColor = borderColor;
         mBorderPaint.setColor(mBorderColor);
+        invalidate();
+    }
+
+    /**
+     * Get the fill/background color
+     * @return The color.
+     */
+    public int getFillColor() {
+        return mFillColor;
+    }
+
+    /**
+     * Set the fill/background color of the image. Only useful if the image contains transparent areas.
+     * @param fillColor The fill color.
+     */
+    public void setFillColor(int fillColor) {
+        if (fillColor == mFillColor) {
+            return;
+        }
+
+        mFillColor = fillColor;
+        mFillPaint.setColor(fillColor);
         invalidate();
     }
 
@@ -234,6 +264,10 @@ public class CircleImageView extends ImageView {
         mBorderPaint.setColor(mBorderColor);
         mBorderPaint.setStrokeWidth(mBorderWidth);
 
+        mFillPaint.setStyle(Paint.Style.FILL);
+        mFillPaint.setAntiAlias(true);
+        mFillPaint.setColor(mFillColor);
+
         mBitmapHeight = mBitmap.getHeight();
         mBitmapWidth = mBitmap.getWidth();
 
@@ -254,11 +288,14 @@ public class CircleImageView extends ImageView {
 
         mShaderMatrix.set(null);
 
-        if (mBitmapWidth * mDrawableRect.height() > mDrawableRect.width() * mBitmapHeight) {
-            scale = mDrawableRect.height() / (float) mBitmapHeight;
+        float scaleX = mDrawableRect.width() / mBitmapWidth;
+        float scaleY = mDrawableRect.height() / mBitmapHeight;
+        if (scaleX > scaleY) {
+            scale = scaleY;
             dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;
-        } else {
-            scale = mDrawableRect.width() / (float) mBitmapWidth;
+        }
+        else {
+            scale = scaleX;
             dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;
         }
 
