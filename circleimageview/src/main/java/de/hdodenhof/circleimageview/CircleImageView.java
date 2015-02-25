@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
@@ -28,6 +30,9 @@ public class CircleImageView extends ImageView {
     private static final int DEFAULT_BORDER_WIDTH = 0;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
 
+    private static final int DEFAULT_SELECTOR_COLOR = Color.TRANSPARENT;
+    private static final int DEFAULT_SELECTOR_BORDER_COLOR = Color.TRANSPARENT;
+
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect = new RectF();
 
@@ -37,6 +42,12 @@ public class CircleImageView extends ImageView {
 
     private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
+
+    private int mSelectorColor = DEFAULT_SELECTOR_COLOR;
+    private int mSelectorBorderColor = DEFAULT_SELECTOR_BORDER_COLOR;
+
+    private PorterDuffColorFilter mSelectorColorFilter;
+    private PorterDuffColorFilter mSelectorBorderColorFilter;
 
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
@@ -69,7 +80,14 @@ public class CircleImageView extends ImageView {
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);
         mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);
 
+        mSelectorColor = a.getColor(R.styleable.CircleImageView_selector_color, DEFAULT_SELECTOR_COLOR);
+        mSelectorBorderColor = a.getColor(R.styleable.CircleImageView_selector_border_color,
+                DEFAULT_SELECTOR_BORDER_COLOR);
+
         a.recycle();
+
+        mSelectorColorFilter = new PorterDuffColorFilter(mSelectorColor, PorterDuff.Mode.SRC_ATOP);
+        mSelectorBorderColorFilter = new PorterDuffColorFilter(mSelectorBorderColor, PorterDuff.Mode.SRC_ATOP);
 
         init();
     }
@@ -110,6 +128,7 @@ public class CircleImageView extends ImageView {
         }
 
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);
+
         if (mBorderWidth != 0) {
             canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
         }
@@ -119,6 +138,21 @@ public class CircleImageView extends ImageView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         setup();
+    }
+
+    @Override
+    public void setPressed(boolean pressed) {
+        super.setPressed(pressed);
+
+        if (pressed) {
+            mBitmapPaint.setColorFilter(mSelectorColorFilter);
+            mBorderPaint.setColorFilter(mSelectorBorderColorFilter);
+        } else {
+            mBitmapPaint.setColorFilter(mColorFilter);
+            mBorderPaint.setColorFilter(null);
+        }
+
+        invalidate();
     }
 
     public int getBorderColor() {
@@ -132,6 +166,34 @@ public class CircleImageView extends ImageView {
 
         mBorderColor = borderColor;
         mBorderPaint.setColor(mBorderColor);
+        invalidate();
+    }
+
+    public int getSelectorColor() {
+        return mSelectorColor;
+    }
+
+    public void setSelectorColor(int selectorColor) {
+        if (selectorColor == mSelectorColor) {
+            return;
+        }
+
+        mSelectorColor = selectorColor;
+        mSelectorColorFilter = new PorterDuffColorFilter(mSelectorColor, PorterDuff.Mode.SRC_ATOP);
+        invalidate();
+    }
+
+    public int getSelectorBorderColor() {
+        return mSelectorBorderColor;
+    }
+
+    public void setSelectorBorderColor(int selectorBorderColor) {
+        if (selectorBorderColor == mSelectorBorderColor) {
+            return;
+        }
+
+        mSelectorBorderColor = selectorBorderColor;
+        mSelectorBorderColorFilter = new PorterDuffColorFilter(mSelectorBorderColor, PorterDuff.Mode.SRC_ATOP);
         invalidate();
     }
 
