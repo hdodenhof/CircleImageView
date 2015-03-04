@@ -27,6 +27,7 @@ public class CircleImageView extends ImageView {
 
     private static final int DEFAULT_BORDER_WIDTH = 0;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
+    private static final boolean DEFAULT_BORDER_INSET = true;
 
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect = new RectF();
@@ -50,6 +51,7 @@ public class CircleImageView extends ImageView {
 
     private boolean mReady;
     private boolean mSetupPending;
+    private boolean mBorderInset;
 
     public CircleImageView(Context context) {
         super(context);
@@ -68,6 +70,7 @@ public class CircleImageView extends ImageView {
 
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);
         mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);
+        mBorderInset = a.getBoolean(R.styleable.CircleImageView_border_inset, DEFAULT_BORDER_INSET );
 
         a.recycle();
 
@@ -147,6 +150,19 @@ public class CircleImageView extends ImageView {
         mBorderWidth = borderWidth;
         setup();
     }
+
+	public boolean getBorderInset() {
+		return mBorderInset;
+	}
+
+	public void setBorderInset(boolean borderInset) {
+		if (borderInset == mBorderInset) {
+			return;
+		}
+
+		mBorderInset = borderInset;
+		setup();
+	}
 
     @Override
     public void setImageBitmap(Bitmap bm) {
@@ -240,7 +256,8 @@ public class CircleImageView extends ImageView {
         mBorderRect.set(0, 0, getWidth(), getHeight());
         mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);
 
-        mDrawableRect.set(mBorderWidth, mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
+        mDrawableRect.set(mBorderRect);
+        if (mBorderInset) mDrawableRect.inset(mBorderWidth, mBorderWidth);
         mDrawableRadius = Math.min(mDrawableRect.height() / 2, mDrawableRect.width() / 2);
 
         updateShaderMatrix();
@@ -263,7 +280,7 @@ public class CircleImageView extends ImageView {
         }
 
         mShaderMatrix.setScale(scale, scale);
-        mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth, (int) (dy + 0.5f) + mBorderWidth);
+        mShaderMatrix.postTranslate((int) (dx + 0.5f) + mDrawableRect.left, (int) (dy + 0.5f) + mDrawableRect.top);
 
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
