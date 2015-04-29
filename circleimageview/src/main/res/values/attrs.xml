@@ -3,5 +3,8 @@
     <declare-styleable name="CircleImageView">
         <attr name="border_width" format="dimension" />
         <attr name="border_color" format="color" />
+
+        <attr name="shadow_width" format="dimension" />
+        <attr name="shadow_color" format="color" />
     </declare-styleable>
 </resources>
