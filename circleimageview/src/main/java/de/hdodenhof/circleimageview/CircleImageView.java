@@ -70,7 +70,7 @@ public class CircleImageView extends ImageView {
 
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);
         mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);
-        mBorderInset = a.getBoolean(R.styleable.CircleImageView_border_inset, DEFAULT_BORDER_INSET );
+        mBorderInset = a.getBoolean(R.styleable.CircleImageView_border_inset, DEFAULT_BORDER_INSET);
 
         a.recycle();
 
@@ -151,18 +151,18 @@ public class CircleImageView extends ImageView {
         setup();
     }
 
-	public boolean getBorderInset() {
-		return mBorderInset;
-	}
+    public boolean getBorderInset() {
+        return mBorderInset;
+    }
 
-	public void setBorderInset(boolean borderInset) {
-		if (borderInset == mBorderInset) {
-			return;
-		}
+    public void setBorderInset(boolean borderInset) {
+        if (borderInset == mBorderInset) {
+            return;
+        }
 
-		mBorderInset = borderInset;
-		setup();
-	}
+        mBorderInset = borderInset;
+        setup();
+    }
 
     @Override
     public void setImageBitmap(Bitmap bm) {
@@ -257,7 +257,9 @@ public class CircleImageView extends ImageView {
         mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);
 
         mDrawableRect.set(mBorderRect);
-        if (mBorderInset) mDrawableRect.inset(mBorderWidth, mBorderWidth);
+        if (mBorderInset) {
+            mDrawableRect.inset(mBorderWidth, mBorderWidth);
+        }
         mDrawableRadius = Math.min(mDrawableRect.height() / 2, mDrawableRect.width() / 2);
 
         updateShaderMatrix();
