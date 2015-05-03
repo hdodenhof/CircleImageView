@@ -10,4 +10,8 @@ android {
     }
 }
 
+dependencies {
+    provided 'com.android.support:support-annotations:22.1.1'
+}
+
 apply from: 'https://raw.github.com/hdodenhof/gradle-mvn-push/master/gradle-mvn-push.gradle'
