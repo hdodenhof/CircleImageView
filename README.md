@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:1.2.2'
+    compile 'de.hdodenhof:circleimageview:1.3.0'
 }
 ```
 
@@ -43,6 +43,10 @@ Limitations
 
 Changelog
 ---------
+* **1.3.0**
+    * Add setBorderColorResource(int resId)
+    * Add resource type annotations
+    * Add border_overlay attribute to allow drawing border on top of the base image
 * **1.2.2**
     * Add ColorFilter support
 * **1.2.1**
