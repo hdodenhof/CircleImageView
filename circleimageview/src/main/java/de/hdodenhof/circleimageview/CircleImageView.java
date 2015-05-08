@@ -55,6 +55,11 @@ public class CircleImageView extends ImageView {
     private boolean mSetupPending;
     private boolean mBorderOverlay;
 
+    private int mPaddingTop;
+    private int mPaddingLeft;
+    private int mPaddingRight;
+    private int mPaddingBottom;
+
     public CircleImageView(Context context) {
         super(context);
 
@@ -75,6 +80,11 @@ public class CircleImageView extends ImageView {
         mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_border_overlay, DEFAULT_BORDER_OVERLAY);
 
         a.recycle();
+
+        mPaddingTop = getPaddingTop();
+        mPaddingLeft = getPaddingLeft();
+        mPaddingRight = getPaddingRight();
+        mPaddingBottom = getPaddingBottom();
 
         init();
     }
@@ -114,9 +124,11 @@ public class CircleImageView extends ImageView {
             return;
         }
 
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);
+        canvas.drawCircle(mPaddingLeft + (getWidth() - mPaddingRight - mPaddingLeft) / 2,
+                mPaddingTop + (getHeight() - mPaddingTop - mPaddingBottom)/ 2, mDrawableRadius, mBitmapPaint);
+
         if (mBorderWidth != 0) {
-            canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
+            canvas.drawCircle(mPaddingLeft + (getWidth() - mPaddingRight - mPaddingLeft) / 2, mPaddingTop + (getHeight() - mPaddingTop - mPaddingBottom )/ 2, mBorderRadius, mBorderPaint);
         }
     }
 
@@ -228,7 +240,7 @@ public class CircleImageView extends ImageView {
             }
 
             Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.setBounds(mPaddingLeft, mPaddingTop, canvas.getWidth() - mPaddingRight, canvas.getHeight() - mPaddingBottom);
             drawable.draw(canvas);
             return bitmap;
         } catch (OutOfMemoryError e) {
@@ -259,10 +271,10 @@ public class CircleImageView extends ImageView {
         mBitmapHeight = mBitmap.getHeight();
         mBitmapWidth = mBitmap.getWidth();
 
-        mBorderRect.set(0, 0, getWidth(), getHeight());
+        mBorderRect.set(mPaddingLeft, mPaddingTop, getWidth() - mPaddingRight, getHeight() - mPaddingBottom);
         mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);
 
-        mDrawableRect.set(mBorderRect);
+        mDrawableRect.set(mBorderWidth + mPaddingLeft, mBorderWidth + mPaddingTop, getWidth() - mPaddingRight - mBorderWidth, getHeight() - mPaddingBottom - mBorderWidth);
         if (!mBorderOverlay) {
             mDrawableRect.inset(mBorderWidth, mBorderWidth);
         }
