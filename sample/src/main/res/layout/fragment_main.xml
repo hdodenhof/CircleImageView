@@ -19,8 +19,8 @@
             android:layout_height="160dp"
             android:layout_centerInParent="true"
             android:src="@drawable/hugh"
-            app:border_width="2dp"
-            app:border_color="@color/dark" />
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/dark" />
 
     </RelativeLayout>
 
@@ -36,8 +36,8 @@
             android:layout_height="160dp"
             android:layout_centerInParent="true"
             android:src="@drawable/hugh"
-            app:border_width="2dp"
-            app:border_color="@color/light" />
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/light" />
 
     </RelativeLayout>
 
