@@ -114,9 +114,9 @@ public class CircleImageView extends ImageView {
             return;
         }
 
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);
+        canvas.drawCircle(getWidth() / 2.0f, getHeight() / 2.0f, mDrawableRadius, mBitmapPaint);
         if (mBorderWidth != 0) {
-            canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
+            canvas.drawCircle(getWidth() / 2.0f, getHeight() / 2.0f, mBorderRadius, mBorderPaint);
         }
     }
 
@@ -260,13 +260,13 @@ public class CircleImageView extends ImageView {
         mBitmapWidth = mBitmap.getWidth();
 
         mBorderRect.set(0, 0, getWidth(), getHeight());
-        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);
+        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2.0f, (mBorderRect.width() - mBorderWidth) / 2.0f);
 
         mDrawableRect.set(mBorderRect);
         if (!mBorderOverlay) {
             mDrawableRect.inset(mBorderWidth, mBorderWidth);
         }
-        mDrawableRadius = Math.min(mDrawableRect.height() / 2, mDrawableRect.width() / 2);
+        mDrawableRadius = Math.min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f);
 
         updateShaderMatrix();
         invalidate();
