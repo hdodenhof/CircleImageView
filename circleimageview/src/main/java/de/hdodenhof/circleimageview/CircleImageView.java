@@ -110,7 +110,7 @@ public class CircleImageView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (getDrawable() == null) {
+        if (getDrawable() == null || mBitmap == null) {
             return;
         }
 
