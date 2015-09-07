@@ -180,7 +180,21 @@ public class CircleImageView extends ImageView {
         mBorderOverlay = borderOverlay;
         setup();
     }
+    
+    public int getCircleBackgroundColor() {
+        return mCircleBackgroundColor;
+    }
 
+    public void setCircleBackgroundColor(int circleBackgroundColor) {
+        if (circleBackgroundColor == mCircleBackgroundColor) {
+            return;
+        }
+
+        mCircleBackgroundColor = circleBackgroundColor;
+        mBackgroundPaint.setColor(mCircleBackgroundColor);
+        invalidate();
+    }
+    
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
