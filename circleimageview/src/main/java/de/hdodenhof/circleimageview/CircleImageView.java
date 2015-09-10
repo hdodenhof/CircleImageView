@@ -31,15 +31,20 @@ public class CircleImageView extends ImageView {
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
     private static final boolean DEFAULT_BORDER_OVERLAY = false;
 
+    private static final int DEFAULT_BACKGROUND_COLOR = Color.TRANSPARENT;
+
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect = new RectF();
 
     private final Matrix mShaderMatrix = new Matrix();
     private final Paint mBitmapPaint = new Paint();
     private final Paint mBorderPaint = new Paint();
+    private final Paint mBackgroundPaint = new Paint();
 
     private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
+
+    private int mCircleBackgroundColor = DEFAULT_BACKGROUND_COLOR;
 
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
@@ -73,6 +78,7 @@ public class CircleImageView extends ImageView {
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_border_width, DEFAULT_BORDER_WIDTH);
         mBorderColor = a.getColor(R.styleable.CircleImageView_border_color, DEFAULT_BORDER_COLOR);
         mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_border_overlay, DEFAULT_BORDER_OVERLAY);
+        mCircleBackgroundColor = a.getColor(R.styleable.CircleImageView_circle_background, DEFAULT_BACKGROUND_COLOR);
 
         a.recycle();
 
@@ -114,10 +120,15 @@ public class CircleImageView extends ImageView {
             return;
         }
 
+        if (mCircleBackgroundColor != DEFAULT_BACKGROUND_COLOR) {
+            canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBackgroundPaint);
+        }
+
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);
         if (mBorderWidth != 0) {
             canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
         }
+
     }
 
     @Override
@@ -169,7 +180,21 @@ public class CircleImageView extends ImageView {
         mBorderOverlay = borderOverlay;
         setup();
     }
+    
+    public int getCircleBackgroundColor() {
+        return mCircleBackgroundColor;
+    }
 
+    public void setCircleBackgroundColor(int circleBackgroundColor) {
+        if (circleBackgroundColor == mCircleBackgroundColor) {
+            return;
+        }
+
+        mCircleBackgroundColor = circleBackgroundColor;
+        mBackgroundPaint.setColor(mCircleBackgroundColor);
+        invalidate();
+    }
+    
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
@@ -255,6 +280,10 @@ public class CircleImageView extends ImageView {
         mBorderPaint.setAntiAlias(true);
         mBorderPaint.setColor(mBorderColor);
         mBorderPaint.setStrokeWidth(mBorderWidth);
+
+        mBackgroundPaint.setStyle(Paint.Style.FILL);
+        mBackgroundPaint.setAntiAlias(true);
+        mBackgroundPaint.setColor(mCircleBackgroundColor);
 
         mBitmapHeight = mBitmap.getHeight();
         mBitmapWidth = mBitmap.getWidth();

@@ -20,7 +20,8 @@
             android:layout_centerInParent="true"
             android:src="@drawable/hugh"
             app:border_width="2dp"
-            app:border_color="@color/dark" />
+            app:border_color="@color/dark" 
+            app:circle_background="@android:color/black"/>
 
     </RelativeLayout>
 
@@ -37,7 +38,8 @@
             android:layout_centerInParent="true"
             android:src="@drawable/hugh"
             app:border_width="2dp"
-            app:border_color="@color/light" />
+            app:border_color="@color/light" 
+            app:circle_background="@android:color/white"/>
 
     </RelativeLayout>
 
