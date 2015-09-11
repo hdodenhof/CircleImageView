@@ -237,6 +237,10 @@ public class CircleImageView extends ImageView {
     }
 
     private void setup() {
+        if (getWidth() == 0 && getHeight() == 0) {
+            return;
+        }
+        
         if (!mReady) {
             mSetupPending = true;
             return;
@@ -260,7 +264,11 @@ public class CircleImageView extends ImageView {
         mBitmapWidth = mBitmap.getWidth();
 
         mBorderRect.set(0, 0, getWidth(), getHeight());
-        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);
+        int min =  Math.min(getWidth(), getHeight());
+        if (min % 2 != 0) {
+            min = min - 1;
+        }
+        mBorderRadius = (min - mBorderWidth) / 2;
 
         mDrawableRect.set(mBorderRect);
         if (!mBorderOverlay) {
