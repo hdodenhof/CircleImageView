@@ -110,7 +110,7 @@ public class CircleImageView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (getDrawable() == null) {
+        if (mBitmap == null) {
             return;
         }
 
@@ -194,7 +194,7 @@ public class CircleImageView extends ImageView {
     @Override
     public void setImageURI(Uri uri) {
         super.setImageURI(uri);
-        mBitmap = getBitmapFromDrawable(getDrawable());
+        mBitmap = uri != null ? getBitmapFromDrawable(getDrawable()) : null;
         setup();
     }
 
@@ -243,6 +243,7 @@ public class CircleImageView extends ImageView {
         }
 
         if (mBitmap == null) {
+            invalidate();
             return;
         }
 
