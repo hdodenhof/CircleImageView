@@ -252,7 +252,8 @@ public class CircleImageView extends ImageView {
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
             return bitmap;
-        } catch (OutOfMemoryError e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
