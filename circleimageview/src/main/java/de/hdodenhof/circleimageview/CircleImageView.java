@@ -119,7 +119,6 @@ public class CircleImageView extends ImageView {
         }
 
         if (mFillColor != Color.TRANSPARENT) {
-            //only draw fill color if color is not transparent
             canvas.drawCircle(getWidth() / 2.0f, getHeight() / 2.0f, mDrawableRadius, mFillPaint);
         }
         canvas.drawCircle(getWidth() / 2.0f, getHeight() / 2.0f, mDrawableRadius, mBitmapPaint);
@@ -152,18 +151,10 @@ public class CircleImageView extends ImageView {
         setBorderColor(getContext().getResources().getColor(borderColorRes));
     }
 
-    /**
-     * Get the fill/background color
-     * @return The color.
-     */
     public int getFillColor() {
         return mFillColor;
     }
 
-    /**
-     * Set the fill/background color of the image. Only useful if the image contains transparent areas.
-     * @param fillColor The fill color.
-     */
     public void setFillColor(int fillColor) {
         if (fillColor == mFillColor) {
             return;
