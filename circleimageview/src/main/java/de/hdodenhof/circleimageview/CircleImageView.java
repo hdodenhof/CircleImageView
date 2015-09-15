@@ -259,12 +259,12 @@ public class CircleImageView extends ImageView {
     }
 
     private void setup() {
-        if (getWidth() == 0 && getHeight() == 0) {
+        if (!mReady) {
+            mSetupPending = true;
             return;
         }
 
-        if (!mReady) {
-            mSetupPending = true;
+        if (getWidth() == 0 && getHeight() == 0) {
             return;
         }
 
