@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
@@ -137,7 +138,7 @@ public class CircleImageView extends ImageView {
         return mBorderColor;
     }
 
-    public void setBorderColor(int borderColor) {
+    public void setBorderColor(@ColorInt int borderColor) {
         if (borderColor == mBorderColor) {
             return;
         }
@@ -155,7 +156,7 @@ public class CircleImageView extends ImageView {
         return mFillColor;
     }
 
-    public void setFillColor(int fillColor) {
+    public void setFillColor(@ColorInt int fillColor) {
         if (fillColor == mFillColor) {
             return;
         }
@@ -163,6 +164,10 @@ public class CircleImageView extends ImageView {
         mFillColor = fillColor;
         mFillPaint.setColor(fillColor);
         invalidate();
+    }
+
+    public void setFillColorResource(@ColorRes int fillColorRes) {
+        setFillColor(getContext().getResources().getColor(fillColorRes));
     }
 
     public int getBorderWidth() {
