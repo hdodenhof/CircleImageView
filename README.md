@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:1.3.0'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
 }
 ```
 
@@ -30,8 +30,8 @@ Usage
     android:layout_width="96dp"
     android:layout_height="96dp"
     android:src="@drawable/profile"
-    app:border_width="2dp"
-    app:border_color="#FF000000"/>
+    app:civ_border_width="2dp"
+    app:civ_border_color="#FF000000"/>
 ```
 
 Limitations
@@ -43,6 +43,12 @@ Limitations
 
 Changelog
 ---------
+* **2.0.0**
+    * BREAKING: Custom xml attributes are now prefixed with "civ_"
+    * Graceful handling of incompatible drawables
+    * Add support for a fill color shown behind images with transparent areas
+    * Fix dimension calculation issues with small images
+    * Fix bitmap not being cleared when set to null
 * **1.3.0**
     * Add setBorderColorResource(int resId)
     * Add resource type annotations
@@ -67,7 +73,7 @@ Changelog
 License
 -------
 
-    Copyright 2014 Henning Dodenhof
+    Copyright 2014 - 2015 Henning Dodenhof
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
