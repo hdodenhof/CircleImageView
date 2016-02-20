@@ -24,6 +24,7 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
@@ -179,6 +180,11 @@ public class CircleImageView extends ImageView {
         mFillColor = fillColor;
         mFillPaint.setColor(fillColor);
         invalidate();
+    }
+
+    public void setTint(int colordID) {
+        this.setColorFilter(getResources().getColor(colordID));
+        setBorderColor(getBorderColor());
     }
 
     public void setFillColorResource(@ColorRes int fillColorRes) {
