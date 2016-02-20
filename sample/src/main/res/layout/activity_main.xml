@@ -14,9 +14,11 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="160dp"
+            android:id="@+id/circleimage"
             android:layout_height="160dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/hugh"
+            android:tint="@color/blue"
+            android:src="@drawable/head"
             app:civ_border_width="2dp"
             app:civ_border_color="@color/dark" />
 
