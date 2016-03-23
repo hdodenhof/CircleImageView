@@ -33,10 +33,13 @@ import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
-public class CircleImageView extends ImageView {
+import com.lark.meadowlark2.R;
+
+public class CircleImageView extends AppCompatImageView {
 
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
 
@@ -164,7 +167,7 @@ public class CircleImageView extends ImageView {
     }
 
     public void setBorderColorResource(@ColorRes int borderColorRes) {
-        setBorderColor(getContext().getResources().getColor(borderColorRes));
+        setBorderColor(ContextCompat.getColor(getContext(), borderColorRes));
     }
 
     public int getFillColor() {
@@ -182,7 +185,7 @@ public class CircleImageView extends ImageView {
     }
 
     public void setFillColorResource(@ColorRes int fillColorRes) {
-        setFillColor(getContext().getResources().getColor(fillColorRes));
+        setFillColor(ContextCompat.getColor(getContext(), fillColorRes));
     }
 
     public int getBorderWidth() {
@@ -214,28 +217,24 @@ public class CircleImageView extends ImageView {
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
-        mBitmap = bm;
         setup();
     }
 
     @Override
     public void setImageDrawable(Drawable drawable) {
         super.setImageDrawable(drawable);
-        mBitmap = getBitmapFromDrawable(drawable);
         setup();
     }
 
     @Override
     public void setImageResource(@DrawableRes int resId) {
         super.setImageResource(resId);
-        mBitmap = getBitmapFromDrawable(getDrawable());
         setup();
     }
 
     @Override
     public void setImageURI(Uri uri) {
         super.setImageURI(uri);
-        mBitmap = uri != null ? getBitmapFromDrawable(getDrawable()) : null;
         setup();
     }
 
@@ -246,8 +245,14 @@ public class CircleImageView extends ImageView {
         }
 
         mColorFilter = cf;
-        mBitmapPaint.setColorFilter(mColorFilter);
-        invalidate();
+        applyColorFilter();
+    }
+
+    private void applyColorFilter() {
+        if (mBitmapPaint != null) {
+            mBitmapPaint.setColorFilter(mColorFilter);
+            invalidate();
+        }
     }
 
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
@@ -288,6 +293,7 @@ public class CircleImageView extends ImageView {
             return;
         }
 
+        mBitmap = getBitmapFromDrawable(getDrawable());
         if (mBitmap == null) {
             invalidate();
             return;
@@ -319,6 +325,7 @@ public class CircleImageView extends ImageView {
         }
         mDrawableRadius = Math.min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f);
 
+        applyColorFilter();
         updateShaderMatrix();
         invalidate();
     }
