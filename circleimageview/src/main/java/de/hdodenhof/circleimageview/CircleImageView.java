@@ -246,8 +246,14 @@ public class CircleImageView extends ImageView {
         }
 
         mColorFilter = cf;
-        mBitmapPaint.setColorFilter(mColorFilter);
+        applyColorFilter();
         invalidate();
+    }
+
+    private void applyColorFilter() {
+        if (mBitmapPaint != null) {
+            mBitmapPaint.setColorFilter(mColorFilter);
+        }
     }
 
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
@@ -319,6 +325,7 @@ public class CircleImageView extends ImageView {
         }
         mDrawableRadius = Math.min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f);
 
+        applyColorFilter();
         updateShaderMatrix();
         invalidate();
     }
