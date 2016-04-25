@@ -250,6 +250,11 @@ public class CircleImageView extends ImageView {
         invalidate();
     }
 
+    @Override
+    public ColorFilter getColorFilter() {
+        return mColorFilter;
+    }
+
     private void applyColorFilter() {
         if (mBitmapPaint != null) {
             mBitmapPaint.setColorFilter(mColorFilter);
