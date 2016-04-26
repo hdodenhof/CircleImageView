@@ -44,6 +44,7 @@ public class CircleImageView extends ImageView {
     private static final int COLORDRAWABLE_DIMENSION = 2;
 
     private static final int DEFAULT_BORDER_WIDTH = 0;
+    private static final int DEFAULT_PADDING = 0;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
     private static final int DEFAULT_FILL_COLOR = Color.TRANSPARENT;
     private static final boolean DEFAULT_BORDER_OVERLAY = false;
@@ -57,6 +58,7 @@ public class CircleImageView extends ImageView {
     private final Paint mFillPaint = new Paint();
 
     private int mBorderColor = DEFAULT_BORDER_COLOR;
+    private int mPadding = DEFAULT_PADDING;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
     private int mFillColor = DEFAULT_FILL_COLOR;
 
@@ -93,7 +95,7 @@ public class CircleImageView extends ImageView {
         mBorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR);
         mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
         mFillColor = a.getColor(R.styleable.CircleImageView_civ_fill_color, DEFAULT_FILL_COLOR);
-
+        mPadding = a.getDimensionPixelSize(R.styleable.CircleImageView_civ_padding, DEFAULT_PADDING);
         a.recycle();
 
         init();
@@ -135,7 +137,7 @@ public class CircleImageView extends ImageView {
         }
 
         if (mFillColor != Color.TRANSPARENT) {
-            canvas.drawCircle(getWidth() / 2.0f, getHeight() / 2.0f, mDrawableRadius, mFillPaint);
+            canvas.drawCircle(getWidth() / 2.0f, getHeight() / 2.0f, mDrawableRadius+mPadding, mFillPaint);
         }
         canvas.drawCircle(getWidth() / 2.0f, getHeight() / 2.0f, mDrawableRadius, mBitmapPaint);
         if (mBorderWidth != 0) {
@@ -151,6 +153,10 @@ public class CircleImageView extends ImageView {
 
     public int getBorderColor() {
         return mBorderColor;
+    }
+
+    public float getPadding() {
+        return mPadding;
     }
 
     public void setBorderColor(@ColorInt int borderColor) {
@@ -321,8 +327,8 @@ public class CircleImageView extends ImageView {
         mBitmapHeight = mBitmap.getHeight();
         mBitmapWidth = mBitmap.getWidth();
 
-        mBorderRect.set(0, 0, getWidth(), getHeight());
-        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2.0f, (mBorderRect.width() - mBorderWidth) / 2.0f);
+        mBorderRect.set(mPadding, mPadding, getWidth()-mPadding, getHeight()-mPadding);
+        mBorderRadius = Math.min((mBorderRect.height()+mPadding+mPadding - mBorderWidth) / 2.0f, (mBorderRect.width()+mPadding+mPadding - mBorderWidth) / 2.0f);
 
         mDrawableRect.set(mBorderRect);
         if (!mBorderOverlay) {
