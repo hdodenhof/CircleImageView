@@ -45,7 +45,7 @@ public class CircleImageView extends ImageView {
 
     private static final int DEFAULT_BORDER_WIDTH = 0;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
-    private static final int DEFAULT_FILL_COLOR = Color.TRANSPARENT;
+    private static final int DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.TRANSPARENT;
     private static final boolean DEFAULT_BORDER_OVERLAY = false;
 
     private final RectF mDrawableRect = new RectF();
@@ -54,11 +54,11 @@ public class CircleImageView extends ImageView {
     private final Matrix mShaderMatrix = new Matrix();
     private final Paint mBitmapPaint = new Paint();
     private final Paint mBorderPaint = new Paint();
-    private final Paint mFillPaint = new Paint();
+    private final Paint mCircleBackgroundPaint = new Paint();
 
     private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
-    private int mFillColor = DEFAULT_FILL_COLOR;
+    private int mCircleBackgroundColor = DEFAULT_CIRCLE_BACKGROUND_COLOR;
 
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
@@ -93,7 +93,15 @@ public class CircleImageView extends ImageView {
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_civ_border_width, DEFAULT_BORDER_WIDTH);
         mBorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR);
         mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
-        mFillColor = a.getColor(R.styleable.CircleImageView_civ_fill_color, DEFAULT_FILL_COLOR);
+
+        // Look for deprecated civ_fill_color if civ_circle_background_color is not set
+        if (a.hasValue(R.styleable.CircleImageView_civ_circle_background_color)) {
+            mCircleBackgroundColor = a.getColor(R.styleable.CircleImageView_civ_circle_background_color,
+                    DEFAULT_CIRCLE_BACKGROUND_COLOR);
+        } else if (a.hasValue(R.styleable.CircleImageView_civ_fill_color)) {
+            mCircleBackgroundColor = a.getColor(R.styleable.CircleImageView_civ_fill_color,
+                    DEFAULT_CIRCLE_BACKGROUND_COLOR);
+        }
 
         a.recycle();
 
@@ -140,8 +148,8 @@ public class CircleImageView extends ImageView {
             return;
         }
 
-        if (mFillColor != Color.TRANSPARENT) {
-            canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mFillPaint);
+        if (mCircleBackgroundColor != Color.TRANSPARENT) {
+            canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mCircleBackgroundPaint);
         }
         canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
         if (mBorderWidth > 0) {
@@ -189,16 +197,34 @@ public class CircleImageView extends ImageView {
         setBorderColor(getContext().getResources().getColor(borderColorRes));
     }
 
+    public int getCircleBackgroundColor() {
+        return mCircleBackgroundColor;
+    }
+
+    public void setCircleBackgroundColor(@ColorInt int circleBackgroundColor) {
+        if (circleBackgroundColor == mCircleBackgroundColor) {
+            return;
+        }
+
+        mCircleBackgroundColor = circleBackgroundColor;
+        mCircleBackgroundPaint.setColor(circleBackgroundColor);
+        invalidate();
+    }
+
+    public void setCircleBackgroundColorResource(@ColorRes int circleBackgroundRes) {
+        setCircleBackgroundColor(getContext().getResources().getColor(circleBackgroundRes));
+    }
+
     /**
      * Return the color drawn behind the circle-shaped drawable.
      *
      * @return The color drawn behind the drawable
      *
-     * @deprecated Fill color support is going to be removed in the future
+     * @deprecated Use {@link #getCircleBackgroundColor()} instead.
      */
     @Deprecated
     public int getFillColor() {
-        return mFillColor;
+        return getCircleBackgroundColor();
     }
 
     /**
@@ -207,17 +233,11 @@ public class CircleImageView extends ImageView {
      *
      * @param fillColor The color to be drawn behind the drawable
      *
-     * @deprecated Fill color support is going to be removed in the future
+     * @deprecated Use {@link #setCircleBackgroundColor(int)} instead.
      */
     @Deprecated
     public void setFillColor(@ColorInt int fillColor) {
-        if (fillColor == mFillColor) {
-            return;
-        }
-
-        mFillColor = fillColor;
-        mFillPaint.setColor(fillColor);
-        invalidate();
+        setCircleBackgroundColor(fillColor);
     }
 
     /**
@@ -227,11 +247,11 @@ public class CircleImageView extends ImageView {
      * @param fillColorRes The color resource to be resolved to a color and
      *                     drawn behind the drawable
      *
-     * @deprecated Fill color support is going to be removed in the future
+     * @deprecated Use {@link #setCircleBackgroundColorResource(int)} instead.
      */
     @Deprecated
     public void setFillColorResource(@ColorRes int fillColorRes) {
-        setFillColor(getContext().getResources().getColor(fillColorRes));
+        setCircleBackgroundColorResource(fillColorRes);
     }
 
     public int getBorderWidth() {
@@ -381,9 +401,9 @@ public class CircleImageView extends ImageView {
         mBorderPaint.setColor(mBorderColor);
         mBorderPaint.setStrokeWidth(mBorderWidth);
 
-        mFillPaint.setStyle(Paint.Style.FILL);
-        mFillPaint.setAntiAlias(true);
-        mFillPaint.setColor(mFillColor);
+        mCircleBackgroundPaint.setStyle(Paint.Style.FILL);
+        mCircleBackgroundPaint.setAntiAlias(true);
+        mCircleBackgroundPaint.setColor(mCircleBackgroundColor);
 
         mBitmapHeight = mBitmap.getHeight();
         mBitmapWidth = mBitmap.getWidth();
