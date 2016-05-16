@@ -169,6 +169,10 @@ public class CircleImageView extends ImageView {
         invalidate();
     }
 
+    /**
+     * @deprecated Use {@link #setBorderColor(int)} instead
+     */
+    @Deprecated
     public void setBorderColorResource(@ColorRes int borderColorRes) {
         setBorderColor(getContext().getResources().getColor(borderColorRes));
     }
