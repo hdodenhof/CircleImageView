@@ -155,6 +155,18 @@ public class CircleImageView extends ImageView {
         setup();
     }
 
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding(left, top, right, bottom);
+        setup();
+    }
+
+    @Override
+    public void setPaddingRelative(int start, int top, int end, int bottom) {
+        super.setPaddingRelative(start, top, end, bottom);
+        setup();
+    }
+
     public int getBorderColor() {
         return mBorderColor;
     }
