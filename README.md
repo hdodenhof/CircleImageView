@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }
 ```
 
@@ -43,6 +43,12 @@ Limitations
 
 Changelog
 ---------
+* **2.1.0**
+    * Add support for padding
+    * Add option to disable circular transformation
+    * Fix hairline gap being drawn between image and border under some conditions
+    * Fix NPE when using tint attribute (which is not supported)
+    * Deprecate fill color as it seems to cause quite some confusion
 * **2.0.0**
     * BREAKING: Custom xml attributes are now prefixed with "civ_"
     * Graceful handling of incompatible drawables
