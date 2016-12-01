@@ -38,7 +38,7 @@ import android.widget.ImageView;
 
 public class CircleImageView extends ImageView {
 
-    private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
+    private ScaleType DEFAULT_SCALE_TYPE = ScaleType.CENTER_CROP;
 
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
     private static final int COLORDRAWABLE_DIMENSION = 2;
@@ -101,7 +101,7 @@ public class CircleImageView extends ImageView {
     }
 
     private void init() {
-        super.setScaleType(SCALE_TYPE);
+        super.setScaleType(getScaleType());
         mReady = true;
 
         if (mSetupPending) {
@@ -112,13 +112,19 @@ public class CircleImageView extends ImageView {
 
     @Override
     public ScaleType getScaleType() {
-        return SCALE_TYPE;
+        if (super.getScaleType() != ScaleType.CENTER_CROP && super.getScaleType() != ScaleType.CENTER_INSIDE) {
+            return DEFAULT_SCALE_TYPE;
+        }
+
+        return super.getScaleType();
     }
 
     @Override
     public void setScaleType(ScaleType scaleType) {
-        if (scaleType != SCALE_TYPE) {
-            throw new IllegalArgumentException(String.format("ScaleType %s not supported.", scaleType));
+        if (scaleType != ScaleType.CENTER_INSIDE || scaleType != ScaleType.CENTER_CROP) {
+            throw new IllegalArgumentException(String.format("ScaleType %s not supported. Use ScaleType.CENTER_INSIDE or ScaleType.CENTER_CROP", scaleType));
+        } else {
+            super.setScaleType(scaleType);
         }
     }
 
@@ -415,18 +421,28 @@ public class CircleImageView extends ImageView {
     }
 
     private void updateShaderMatrix() {
-        float scale;
+        float scale = 1;
         float dx = 0;
         float dy = 0;
 
         mShaderMatrix.set(null);
 
-        if (mBitmapWidth * mDrawableRect.height() > mDrawableRect.width() * mBitmapHeight) {
-            scale = mDrawableRect.height() / (float) mBitmapHeight;
-            dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;
-        } else {
-            scale = mDrawableRect.width() / (float) mBitmapWidth;
-            dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;
+        if (getScaleType() == ScaleType.CENTER_CROP) {
+            if (mBitmapWidth * mDrawableRect.height() > mDrawableRect.width() * mBitmapHeight) {
+                scale = mDrawableRect.height() / (float) mBitmapHeight;
+                dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;
+            } else {
+                scale = mDrawableRect.width() / (float) mBitmapWidth;
+                dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;
+            }
+        } else if (getScaleType() == ScaleType.CENTER_INSIDE) {
+            if (mBitmapWidth * mDrawableRect.height() < mDrawableRect.width() * mBitmapHeight) {
+                scale = mDrawableRect.height() / (float) mBitmapHeight;
+                dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;
+            } else {
+                scale = mDrawableRect.width() / (float) mBitmapWidth;
+                dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;
+            }
         }
 
         mShaderMatrix.setScale(scale, scale);
@@ -434,5 +450,4 @@ public class CircleImageView extends ImageView {
 
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
-
 }
