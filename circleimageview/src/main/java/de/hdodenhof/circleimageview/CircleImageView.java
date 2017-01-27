@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 - 2017 Henning Dodenhof
+ * Copyright 2014 - 2015 Henning Dodenhof
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package de.hdodenhof.circleimageview;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -30,11 +31,17 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import de.hdodenhof.circleimageview.exception.CircleImageViewException;
 
 public class CircleImageView extends ImageView {
 
@@ -47,6 +54,7 @@ public class CircleImageView extends ImageView {
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
     private static final int DEFAULT_FILL_COLOR = Color.TRANSPARENT;
     private static final boolean DEFAULT_BORDER_OVERLAY = false;
+    private static final float DEFAULT_BLUR_RADIUS = 0f;
 
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect = new RectF();
@@ -59,6 +67,7 @@ public class CircleImageView extends ImageView {
     private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
     private int mFillColor = DEFAULT_FILL_COLOR;
+    private float mBlurRadius = DEFAULT_BLUR_RADIUS;
 
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
@@ -90,6 +99,7 @@ public class CircleImageView extends ImageView {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
 
+        mBlurRadius = a.getFloat(R.styleable.CircleImageView_civ_blur_radius, DEFAULT_BLUR_RADIUS);
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_civ_border_width, DEFAULT_BORDER_WIDTH);
         mBorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR);
         mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
@@ -144,7 +154,7 @@ public class CircleImageView extends ImageView {
             canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mFillPaint);
         }
         canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
-        if (mBorderWidth > 0) {
+        if (mBorderWidth != 0) {
             canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
         }
     }
@@ -181,35 +191,14 @@ public class CircleImageView extends ImageView {
         invalidate();
     }
 
-    /**
-     * @deprecated Use {@link #setBorderColor(int)} instead
-     */
-    @Deprecated
     public void setBorderColorResource(@ColorRes int borderColorRes) {
         setBorderColor(getContext().getResources().getColor(borderColorRes));
     }
 
-    /**
-     * Return the color drawn behind the circle-shaped drawable.
-     *
-     * @return The color drawn behind the drawable
-     *
-     * @deprecated Fill color support is going to be removed in the future
-     */
-    @Deprecated
     public int getFillColor() {
         return mFillColor;
     }
 
-    /**
-     * Set a color to be drawn behind the circle-shaped drawable. Note that
-     * this has no effect if the drawable is opaque or no drawable is set.
-     *
-     * @param fillColor The color to be drawn behind the drawable
-     *
-     * @deprecated Fill color support is going to be removed in the future
-     */
-    @Deprecated
     public void setFillColor(@ColorInt int fillColor) {
         if (fillColor == mFillColor) {
             return;
@@ -220,16 +209,6 @@ public class CircleImageView extends ImageView {
         invalidate();
     }
 
-    /**
-     * Set a color to be drawn behind the circle-shaped drawable. Note that
-     * this has no effect if the drawable is opaque or no drawable is set.
-     *
-     * @param fillColorRes The color resource to be resolved to a color and
-     *                     drawn behind the drawable
-     *
-     * @deprecated Fill color support is going to be removed in the future
-     */
-    @Deprecated
     public void setFillColorResource(@ColorRes int fillColorRes) {
         setFillColor(getContext().getResources().getColor(fillColorRes));
     }
@@ -273,6 +252,10 @@ public class CircleImageView extends ImageView {
         initializeBitmap();
     }
 
+    public void setBlurRadius(float blurRadius){
+        mBlurRadius = blurRadius;
+        setup();
+    }
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
@@ -352,11 +335,21 @@ public class CircleImageView extends ImageView {
             mBitmap = null;
         } else {
             mBitmap = getBitmapFromDrawable(getDrawable());
+
+
         }
         setup();
     }
 
     private void setup() {
+
+        try {
+            if(mBlurRadius>0)
+                mBitmap = blur(mBitmap, mBlurRadius);
+        } catch (CircleImageViewException e) {
+            e.printStackTrace();
+        }
+
         if (!mReady) {
             mSetupPending = true;
             return;
@@ -392,8 +385,8 @@ public class CircleImageView extends ImageView {
         mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2.0f, (mBorderRect.width() - mBorderWidth) / 2.0f);
 
         mDrawableRect.set(mBorderRect);
-        if (!mBorderOverlay && mBorderWidth > 0) {
-            mDrawableRect.inset(mBorderWidth - 1.0f, mBorderWidth - 1.0f);
+        if (!mBorderOverlay) {
+            mDrawableRect.inset(mBorderWidth, mBorderWidth);
         }
         mDrawableRadius = Math.min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f);
 
@@ -433,6 +426,30 @@ public class CircleImageView extends ImageView {
         mShaderMatrix.postTranslate((int) (dx + 0.5f) + mDrawableRect.left, (int) (dy + 0.5f) + mDrawableRect.top);
 
         mBitmapShader.setLocalMatrix(mShaderMatrix);
+    }
+
+    @TargetApi(18)
+    private Bitmap blur(Bitmap image, float blurRadius) throws CircleImageViewException{
+        try {
+            if (null == image) return null;
+
+            Bitmap outputBitmap = Bitmap.createBitmap(image);
+            final RenderScript renderScript = RenderScript.create(getContext());
+            Allocation tmpIn = Allocation.createFromBitmap(renderScript, image);
+            Allocation tmpOut = Allocation.createFromBitmap(renderScript, outputBitmap);
+
+            //Intrinsic Gausian blur filter
+            ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+            theIntrinsic.setRadius(blurRadius);
+            theIntrinsic.setInput(tmpIn);
+            theIntrinsic.forEach(tmpOut);
+            
+            tmpOut.copyTo(outputBitmap);
+
+            return outputBitmap;
+        } catch (Exception e){
+            throw new CircleImageViewException("Minimum SDK level not supported");
+        }
     }
 
 }
