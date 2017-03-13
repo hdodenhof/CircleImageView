@@ -23,17 +23,23 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Outline;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 
 public class CircleImageView extends ImageView {
@@ -111,6 +117,10 @@ public class CircleImageView extends ImageView {
     private void init() {
         super.setScaleType(SCALE_TYPE);
         mReady = true;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setOutlineProvider(new OutlineProvider());
+        }
 
         if (mSetupPending) {
             setup();
@@ -453,6 +463,18 @@ public class CircleImageView extends ImageView {
         mShaderMatrix.postTranslate((int) (dx + 0.5f) + mDrawableRect.left, (int) (dy + 0.5f) + mDrawableRect.top);
 
         mBitmapShader.setLocalMatrix(mShaderMatrix);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private class OutlineProvider extends ViewOutlineProvider {
+
+        @Override
+        public void getOutline(View view, Outline outline) {
+            Rect bounds = new Rect();
+            mBorderRect.roundOut(bounds);
+            outline.setRoundRect(bounds, bounds.width() / 2.0f);
+        }
+
     }
 
 }
