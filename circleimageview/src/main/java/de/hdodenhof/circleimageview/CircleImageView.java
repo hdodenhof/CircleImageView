@@ -94,9 +94,16 @@ public class CircleImageView extends ImageView {
         mBorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR);
         mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
         mFillColor = a.getColor(R.styleable.CircleImageView_civ_fill_color, DEFAULT_FILL_COLOR);
-
+        int color = a.getColor(R.styleable.CircleImageView_civ_color, 0);
+        
         a.recycle();
 
+        if(color!=0)
+        {
+        	Drawable drawable = new ColorDrawable(color);
+        	this.setImageDrawable(drawable);
+        }
+        
         init();
     }
 
