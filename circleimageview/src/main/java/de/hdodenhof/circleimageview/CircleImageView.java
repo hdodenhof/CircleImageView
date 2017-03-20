@@ -327,6 +327,10 @@ public class CircleImageView extends ImageView {
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
         }
+        //Finals FIXED HTC ONE BUGS
+        if(drawable.getIntrinsicWidth()==0||drawable.getIntrinsicHeight()==0){
+        	return null;
+        }
 
         try {
             Bitmap bitmap;
