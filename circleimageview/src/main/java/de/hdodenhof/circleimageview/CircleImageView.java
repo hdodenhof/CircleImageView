@@ -455,6 +455,6 @@ public class CircleImageView extends ImageView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return mDrawableRegion.contains(Math.round(event.getX()), Math.round(event.getY()))
-                || super.onTouchEvent(event);
+                && super.onTouchEvent(event);
     }
 }
