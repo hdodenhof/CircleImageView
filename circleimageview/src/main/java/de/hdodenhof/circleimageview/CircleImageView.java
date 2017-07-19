@@ -45,6 +45,7 @@ public class CircleImageView extends ImageView {
 
     private static final int DEFAULT_BORDER_WIDTH = 0;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
+    private static final int DEFAULT_BORDER_GAP = 0;
     private static final int DEFAULT_FILL_COLOR = Color.TRANSPARENT;
     private static final boolean DEFAULT_BORDER_OVERLAY = false;
 
@@ -59,7 +60,8 @@ public class CircleImageView extends ImageView {
     private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
     private int mFillColor = DEFAULT_FILL_COLOR;
-
+    private int mBorderGap = DEFAULT_BORDER_GAP;
+	
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
     private int mBitmapWidth;
@@ -93,6 +95,8 @@ public class CircleImageView extends ImageView {
         mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_civ_border_width, DEFAULT_BORDER_WIDTH);
         mBorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR);
         mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
+        mBorderGap = a.getDimensionPixelSize(R.styleable.CircleImageView_civ_border_gap, 0);
+		
         mFillColor = a.getColor(R.styleable.CircleImageView_civ_fill_color, DEFAULT_FILL_COLOR);
 
         a.recycle();
@@ -234,6 +238,30 @@ public class CircleImageView extends ImageView {
         setFillColor(getContext().getResources().getColor(fillColorRes));
     }
 
+    /**
+     * Return the gap between image and it's border.
+     *
+     * @return The color drawn behind the drawable
+     */
+    public int getBorderGap() {
+        return mBorderGap;
+    }
+
+    /**
+     * Set a desired gap between image and it's border.
+     *
+     * @param borderGap The gap between image and border.
+     */
+    public void setBorderGap(@ColorInt int borderGap) {
+        if (borderGap == mBorderGap) {
+            return;
+        }
+
+        mBorderGap = borderGap;
+        setup();
+    }
+
+	
     public int getBorderWidth() {
         return mBorderWidth;
     }
@@ -395,7 +423,7 @@ public class CircleImageView extends ImageView {
         if (!mBorderOverlay && mBorderWidth > 0) {
             mDrawableRect.inset(mBorderWidth - 1.0f, mBorderWidth - 1.0f);
         }
-        mDrawableRadius = Math.min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f);
+        mDrawableRadius = Math.min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f) - mBorderGap;
 
         applyColorFilter();
         updateShaderMatrix();
