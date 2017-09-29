@@ -193,7 +193,6 @@ public class CircleImageView extends ImageView {
      * Return the color drawn behind the circle-shaped drawable.
      *
      * @return The color drawn behind the drawable
-     *
      * @deprecated Fill color support is going to be removed in the future
      */
     @Deprecated
@@ -206,7 +205,6 @@ public class CircleImageView extends ImageView {
      * this has no effect if the drawable is opaque or no drawable is set.
      *
      * @param fillColor The color to be drawn behind the drawable
-     *
      * @deprecated Fill color support is going to be removed in the future
      */
     @Deprecated
@@ -334,7 +332,9 @@ public class CircleImageView extends ImageView {
             if (drawable instanceof ColorDrawable) {
                 bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);
             } else {
-                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
+                int width = drawable.getIntrinsicWidth() <= 0 ? COLORDRAWABLE_DIMENSION : drawable.getIntrinsicWidth();
+                int height = drawable.getIntrinsicHeight() <= 0 ? COLORDRAWABLE_DIMENSION : drawable.getIntrinsicHeight();
+                bitmap = Bitmap.createBitmap(width, height, BITMAP_CONFIG);
             }
 
             Canvas canvas = new Canvas(bitmap);
