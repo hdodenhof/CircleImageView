@@ -41,6 +41,24 @@ Limitations
 * If you use an image loading library like Picasso or Glide, you need to disable their fade animations to avoid messed up images. For Picasso use the `noFade()` option, for Glide use `dontAnimate()`. If you want to keep the fadeIn animation, you have to fetch the image into a `Target` and apply a custom animation yourself when receiving the `Bitmap`.
 * Using a `TransitionDrawable` with `CircleImageView` doesn't work properly and leads to messed up images.
 
+FAQ
+---
+**How can I use a `VectorDrawable` with `CircleImageView`?**
+
+Short answer: you shouldn't. Using a `VectorDrawable` with `CircleImageView` is very inefficient. You should modify your vectors to be in a circular shape and use them with a regular ImageView instead.
+
+**Why doesn't `CircleImageView` extend `AppCompatImageView`?**
+
+Extending `AppCompatImageView` would require adding a runtime dependency for the support library without any real benefit.
+
+**How can I add a selector (e.g. ripple effect) bound to a circle?**
+
+There's currently no direct support for a circle bound selector but you can follow [these steps](https://github.com/hdodenhof/CircleImageView/issues/153#issuecomment-249692049) to implement it yourself.
+
+**How can I add a gap between image and border?**
+
+Adding a gap is also not support directly but [there's a workaround](https://github.com/hdodenhof/CircleImageView/issues/133#issuecomment-225437930).
+
 Changelog
 ---------
 * **2.1.0**
