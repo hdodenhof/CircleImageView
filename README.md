@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'de.hdodenhof:circleimageview:2.2.0'
 }
 ```
 
@@ -61,7 +61,7 @@ Adding a gap is also not support directly but [there's a workaround](https://git
 
 Changelog
 ---------
-* **next**
+* **2.2.0**
     * Add support for elevation
     * Add circle background color attribute to replace fill color
 * **2.1.0**
