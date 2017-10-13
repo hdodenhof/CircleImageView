@@ -67,6 +67,7 @@ public class CircleImageView extends ImageView {
     private int mCircleBackgroundColor = DEFAULT_CIRCLE_BACKGROUND_COLOR;
 
     private Bitmap mBitmap;
+    private Canvas mCanvas;
     private BitmapShader mBitmapShader;
     private int mBitmapWidth;
     private int mBitmapHeight;
@@ -156,6 +157,11 @@ public class CircleImageView extends ImageView {
 
         if (mBitmap == null) {
             return;
+        }
+
+        if (mCanvas != null) {
+            getDrawable().setBounds(0, 0, mCanvas.getWidth(), mCanvas.getHeight());
+            getDrawable().draw(mCanvas);
         }
 
         if (mCircleBackgroundColor != Color.TRANSPARENT) {
@@ -366,10 +372,6 @@ public class CircleImageView extends ImageView {
             } else {
                 bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
             }
-
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
             return bitmap;
         } catch (Exception e) {
             e.printStackTrace();
@@ -382,6 +384,9 @@ public class CircleImageView extends ImageView {
             mBitmap = null;
         } else {
             mBitmap = getBitmapFromDrawable(getDrawable());
+        }
+        if (mBitmap != null && mBitmap.isMutable()) {
+            mCanvas = new Canvas(mBitmap);
         }
         setup();
     }
