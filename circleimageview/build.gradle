@@ -2,16 +2,18 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.1'
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 14
         targetSdkVersion 26
     }
 }
 
 dependencies {
-    provided 'com.android.support:support-annotations:26.1.0'
+    provided 'com.android.support:support-annotations:27.0.0'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.facebook.rebound:rebound:0.3.8@aar'
 }
 
 apply from: 'https://raw.github.com/hdodenhof/gradle-mvn-push/master/gradle-mvn-push.gradle'

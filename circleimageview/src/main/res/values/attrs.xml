@@ -4,6 +4,9 @@
         <attr name="civ_border_width" format="dimension" />
         <attr name="civ_border_color" format="color" />
         <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_implements_custom_behaviour" format="boolean"/>
+        <attr name="civ_border_selected_drawable" format="reference"/>
+        <attr name="civ_border_width_in_percentage" format="integer"/>
         <!-- {@deprecated Use civ_circlebackground_color instead.} -->
         <attr name="civ_fill_color" format="color" />
         <attr name="civ_circle_background_color" format="color" />
