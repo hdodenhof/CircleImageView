@@ -129,10 +129,7 @@ public class CircleImageView extends ImageView implements SpringListener {
 
         if ((mBorderWidth != DEFAULT_BORDER_WIDTH) && (borderWidthIsUsingPercentage())) {
             throw new IllegalArgumentException("Both border_width and border_width_in_percentage have been set, only one is permitted");
-        } else if ((mBorderWidth == DEFAULT_BORDER_WIDTH) && (!borderWidthIsUsingPercentage())) {
-            throw new IllegalArgumentException("Border_width or border_width_in_percentage have not been set at all");
         }
-
         final Drawable selectedDrawable = a.getDrawable(R.styleable.CircleImageView_civ_border_selected_drawable);
         if (selectedDrawable != null) {
             mSelectedStateBitmap = ((BitmapDrawable) selectedDrawable).getBitmap();
