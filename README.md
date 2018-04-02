@@ -23,6 +23,7 @@ dependencies {
 
 Usage
 -----
+Static
 ```xml
 <de.hdodenhof.circleimageview.CircleImageView
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -32,6 +33,23 @@ Usage
     android:src="@drawable/profile"
     app:civ_border_width="2dp"
     app:civ_border_color="#FF000000"/>
+```
+
+Dynamic: 
+
+* Glide
+```java
+	Glide.with(context).load(R.drawable.image).into(Imageview);
+```
+
+* Picasso
+```java
+	Picasso.with(context).load(R.drawable.image).into(Imageview);
+```
+
+* FindViewById
+```java
+	imageView.setImageResource(R.drawable.image);
 ```
 
 Limitations
