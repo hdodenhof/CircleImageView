@@ -17,8 +17,6 @@ Gradle
 ```
 dependencies {
     ...
-    compile 'de.hdodenhof:circleimageview:2.2.0'
-    //or
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
 ```

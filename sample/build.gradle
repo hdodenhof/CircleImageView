@@ -11,5 +11,5 @@ android {
 }
 
 dependencies {
-    compile project(':circleimageview')
+    implementation project(':circleimageview')
 }
