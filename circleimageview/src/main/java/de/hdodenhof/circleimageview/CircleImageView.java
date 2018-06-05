@@ -38,6 +38,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
@@ -465,6 +466,15 @@ public class CircleImageView extends ImageView {
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return inTouchableArea(event.getX(), event.getY()) && super.onTouchEvent(event);
+    }
+
+    private boolean inTouchableArea(float x, float y) {
+        return Math.pow(x - mBorderRect.centerX(), 2) + Math.pow(y - mBorderRect.centerY(), 2) <= Math.pow(mBorderRadius, 2);
+    }
+    
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private class OutlineProvider extends ViewOutlineProvider {
 
