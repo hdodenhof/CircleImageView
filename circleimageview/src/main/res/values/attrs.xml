@@ -7,5 +7,6 @@
         <!-- {@deprecated Use civ_circlebackground_color instead.} -->
         <attr name="civ_fill_color" format="color" />
         <attr name="civ_circle_background_color" format="color" />
+        <attr name="civ_alpha" format="integer" />
     </declare-styleable>
 </resources>
