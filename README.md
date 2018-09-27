@@ -63,6 +63,7 @@ Changelog
 ---------
 * **next**
     * Limit touch event handling to circle area
+    * Migrate to AndroidX
 * **2.2.0**
     * Add support for elevation
     * Add circle background color attribute to replace fill color
