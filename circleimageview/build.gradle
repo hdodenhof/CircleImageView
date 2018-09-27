@@ -1,17 +1,17 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 27
+        targetSdkVersion 28
     }
 }
 
 dependencies {
-    compileOnly 'com.android.support:support-annotations:27.1.0'
+    compileOnly 'androidx.annotation:annotation:1.0.0-alpha1'
 }
 
 apply from: 'https://raw.github.com/hdodenhof/gradle-mvn-push/master/gradle-mvn-push.gradle'
