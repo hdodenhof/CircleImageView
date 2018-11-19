@@ -11,7 +11,7 @@ android {
 }
 
 dependencies {
-    compileOnly 'com.android.support:support-annotations:27.1.0'
+    implementation 'com.android.support:support-annotations:27.1.0'
 }
 
 apply from: 'https://raw.github.com/hdodenhof/gradle-mvn-push/master/gradle-mvn-push.gradle'
