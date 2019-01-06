@@ -290,9 +290,7 @@ public class CircleImageView extends ImageView {
     }
 
     private void applyColorFilter() {
-        if (mBitmapPaint != null) {
-            mBitmapPaint.setColorFilter(mColorFilter);
-        }
+        mBitmapPaint.setColorFilter(mColorFilter);
     }
 
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
