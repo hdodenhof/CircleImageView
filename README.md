@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 }
 ```
 
@@ -61,7 +61,7 @@ Adding a gap is also not support directly but [there's a workaround](https://git
 
 Changelog
 ---------
-* **next**
+* **3.0.0**
     * Limit touch event handling to circle area
     * Migrate to AndroidX
     * Remove deprecated properties and methods
