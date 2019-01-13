@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 }
 ```
 
@@ -61,8 +61,10 @@ Adding a gap is also not support directly but [there's a workaround](https://git
 
 Changelog
 ---------
-* **next**
+* **3.0.0**
     * Limit touch event handling to circle area
+    * Migrate to AndroidX
+    * Remove deprecated properties and methods
 * **2.2.0**
     * Add support for elevation
     * Add circle background color attribute to replace fill color
@@ -102,7 +104,7 @@ Changelog
 License
 -------
 
-    Copyright 2014 - 2018 Henning Dodenhof
+    Copyright 2014 - 2019 Henning Dodenhof
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
