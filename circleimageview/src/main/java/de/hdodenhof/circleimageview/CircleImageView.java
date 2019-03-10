@@ -418,8 +418,8 @@ public class CircleImageView extends ImageView {
     }
 
     private boolean inTouchableArea(float x, float y) {
-        // mDisableCircularTransformation is true, handle Touch events normally.
-        if(mDisableCircularTransformation) {
+        if(mDisableCircularTransformation || mBitmap == null) {
+            // mDisableCircularTransformation is true or mBitmap is null, handle Touch events normally.
             return true;
         }
         return Math.pow(x - mBorderRect.centerX(), 2) + Math.pow(y - mBorderRect.centerY(), 2) <= Math.pow(mBorderRadius, 2);
