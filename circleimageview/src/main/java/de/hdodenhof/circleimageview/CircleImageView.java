@@ -76,6 +76,7 @@ public class CircleImageView extends ImageView {
 
     private float mDrawableRadius;
     private float mBorderRadius;
+    private int mBorderAlpha = 255;
 
     private ColorFilter mColorFilter;
 
@@ -103,6 +104,10 @@ public class CircleImageView extends ImageView {
         mBorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR);
         mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
         mCircleBackgroundColor = a.getColor(R.styleable.CircleImageView_civ_circle_background_color, DEFAULT_CIRCLE_BACKGROUND_COLOR);
+        mBorderAlpha = a.getInt(R.styleable.CircleImageView_civ_border_alpha, 255);
+        if (mBorderAlpha > 255 || mBorderAlpha < 0) {
+            throw new IllegalArgumentException("Alpha out of range. between 0 and 255");
+        }
 
         a.recycle();
 
@@ -323,6 +328,18 @@ public class CircleImageView extends ImageView {
         }
     }
 
+    public int getBorderAlpha() {
+        return this.mBorderAlpha;
+    }
+
+    public void setBorderAlpha(int mBorderAlpha) {
+        this.mBorderAlpha = mBorderAlpha;
+        if (mBorderAlpha > 255 || mBorderAlpha < 0) {
+            throw new IllegalArgumentException("Alpha out of range. between 0 and 255");
+        }
+        initializeBitmap();
+    }
+
     private void initializeBitmap() {
         if (mDisableCircularTransformation) {
             mBitmap = null;
@@ -356,6 +373,7 @@ public class CircleImageView extends ImageView {
         mBorderPaint.setAntiAlias(true);
         mBorderPaint.setColor(mBorderColor);
         mBorderPaint.setStrokeWidth(mBorderWidth);
+        mBorderPaint.setAlpha(mBorderAlpha);
 
         mCircleBackgroundPaint.setStyle(Paint.Style.FILL);
         mCircleBackgroundPaint.setAntiAlias(true);
