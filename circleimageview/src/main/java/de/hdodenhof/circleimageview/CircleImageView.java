@@ -418,6 +418,10 @@ public class CircleImageView extends ImageView {
     }
 
     private boolean inTouchableArea(float x, float y) {
+        if (mBorderRect.isEmpty()) {
+            return true;
+        }
+
         return Math.pow(x - mBorderRect.centerX(), 2) + Math.pow(y - mBorderRect.centerY(), 2) <= Math.pow(mBorderRadius, 2);
     }
     
