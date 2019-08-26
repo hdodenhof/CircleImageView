@@ -414,6 +414,10 @@ public class CircleImageView extends ImageView {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (mDisableCircularTransformation) {
+            return super.onTouchEvent(event);
+        }
+
         return inTouchableArea(event.getX(), event.getY()) && super.onTouchEvent(event);
     }
 
