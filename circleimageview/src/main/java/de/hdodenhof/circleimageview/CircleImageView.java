@@ -434,9 +434,13 @@ public class CircleImageView extends ImageView {
 
         @Override
         public void getOutline(View view, Outline outline) {
-            Rect bounds = new Rect();
-            mBorderRect.roundOut(bounds);
-            outline.setRoundRect(bounds, bounds.width() / 2.0f);
+            if (mDisableCircularTransformation) {
+                ViewOutlineProvider.BACKGROUND.getOutline(view, outline);
+            } else {
+                Rect bounds = new Rect();
+                mBorderRect.roundOut(bounds);
+                outline.setRoundRect(bounds, bounds.width() / 2.0f);
+            }
         }
 
     }
