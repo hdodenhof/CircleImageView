@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 - 2019 Henning Dodenhof
+ * Copyright 2014 - 2020 Henning Dodenhof
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
