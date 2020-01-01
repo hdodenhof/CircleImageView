@@ -291,8 +291,13 @@ public class CircleImageView extends ImageView {
         return mColorFilter;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void applyColorFilter() {
-        mBitmapPaint.setColorFilter(mColorFilter);
+        // This might be called from setColorFilter during ImageView construction
+        // before member initialization has finished on API level <= 19.
+        if (mBitmapPaint != null) {
+            mBitmapPaint.setColorFilter(mColorFilter);
+        }
     }
 
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
