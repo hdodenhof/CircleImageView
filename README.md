@@ -17,7 +17,7 @@ Gradle
 ```
 dependencies {
     ...
-    implementation 'de.hdodenhof:circleimageview:3.0.2'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }
 ```
 
@@ -61,6 +61,8 @@ Adding a gap is also not support directly but [there's a workaround](https://git
 
 Changelog
 ---------
+* **3.1.0**
+    * Align bitmap paint flags with BitmapDrawable (improves scaling)
 * **3.0.2**
     * Fix NPE during initialization on API level <= 19
     * Fix wrong outline being provided if circular transformation is disabled
