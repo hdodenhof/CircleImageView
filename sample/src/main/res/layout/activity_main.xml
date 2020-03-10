@@ -30,10 +30,11 @@
         android:background="@color/dark">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv2"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/hugh"
+            android:src="@drawable/transitiontest"
             app:civ_border_width="2dp"
             app:civ_border_color="@color/light" />
 
