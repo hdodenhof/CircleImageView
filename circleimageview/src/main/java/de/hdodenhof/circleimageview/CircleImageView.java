@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -72,6 +73,7 @@ public class CircleImageView extends ImageView {
     private int mImageAlpha = DEFAULT_IMAGE_ALPHA;
 
     private Bitmap mBitmap;
+    private Canvas mBitmapCanvas;
 
     private float mDrawableRadius;
     private float mBorderRadius;
@@ -80,6 +82,7 @@ public class CircleImageView extends ImageView {
 
     private boolean mInitialized;
     private boolean mRebuildShader;
+    private boolean mDrawableDirty;
 
     private boolean mBorderOverlay;
     private boolean mDisableCircularTransformation;
@@ -148,6 +151,7 @@ public class CircleImageView extends ImageView {
         }
     }
 
+    @SuppressLint("CanvasSize")
     @Override
     protected void onDraw(Canvas canvas) {
         if (mDisableCircularTransformation) {
@@ -160,6 +164,13 @@ public class CircleImageView extends ImageView {
         }
 
         if (mBitmap != null) {
+            if (mDrawableDirty && mBitmapCanvas != null) {
+                mDrawableDirty = false;
+                Drawable drawable = getDrawable();
+                drawable.setBounds(0, 0, mBitmapCanvas.getWidth(), mBitmapCanvas.getHeight());
+                drawable.draw(mBitmapCanvas);
+            }
+
             if (mRebuildShader) {
                 mRebuildShader = false;
 
@@ -175,6 +186,12 @@ public class CircleImageView extends ImageView {
         if (mBorderWidth > 0) {
             canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
         }
+    }
+
+    @Override
+    public void invalidateDrawable(@NonNull Drawable dr) {
+        mDrawableDirty = true;
+        invalidate();
     }
 
     @Override
@@ -276,6 +293,7 @@ public class CircleImageView extends ImageView {
 
         if (disableCircularTransformation) {
             mBitmap = null;
+            mBitmapCanvas = null;
             mBitmapPaint.setShader(null);
         } else {
             initializeBitmap();
@@ -386,6 +404,12 @@ public class CircleImageView extends ImageView {
 
     private void initializeBitmap() {
         mBitmap = getBitmapFromDrawable(getDrawable());
+
+        if (mBitmap != null && mBitmap.isMutable()) {
+            mBitmapCanvas = new Canvas(mBitmap);
+        } else {
+            mBitmapCanvas = null;
+        }
 
         if (!mInitialized) {
             return;
