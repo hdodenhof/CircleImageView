@@ -55,6 +55,7 @@ public class CircleImageView extends ImageView {
     private static final int DEFAULT_BORDER_WIDTH = 0;
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
     private static final int DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.TRANSPARENT;
+    private static final int DEFAULT_IMAGE_ALPHA = 255;
     private static final boolean DEFAULT_BORDER_OVERLAY = false;
 
     private final RectF mDrawableRect = new RectF();
@@ -68,6 +69,7 @@ public class CircleImageView extends ImageView {
     private int mBorderColor = DEFAULT_BORDER_COLOR;
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
     private int mCircleBackgroundColor = DEFAULT_CIRCLE_BACKGROUND_COLOR;
+    private int mImageAlpha = DEFAULT_IMAGE_ALPHA;
 
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
@@ -276,6 +278,24 @@ public class CircleImageView extends ImageView {
     }
 
     @Override
+    public void setImageAlpha(int alpha) {
+        alpha &= 0xFF;
+
+        if (alpha == mImageAlpha) {
+            return;
+        }
+
+        mImageAlpha = alpha;
+        applyImageAlpha();
+        invalidate();
+    }
+
+    @Override
+    public int getImageAlpha() {
+        return mImageAlpha;
+    }
+
+    @Override
     public void setColorFilter(ColorFilter cf) {
         if (cf == mColorFilter) {
             return;
@@ -289,6 +309,15 @@ public class CircleImageView extends ImageView {
     @Override
     public ColorFilter getColorFilter() {
         return mColorFilter;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void applyImageAlpha() {
+        // This might be called from setImageAlpha during ImageView construction
+        // before member initialization has finished on API level <= 19.
+        if (mBitmapPaint != null) {
+            mBitmapPaint.setAlpha(mImageAlpha);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -380,6 +409,7 @@ public class CircleImageView extends ImageView {
         }
         mDrawableRadius = Math.min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f);
 
+        applyImageAlpha();
         applyColorFilter();
         updateShaderMatrix();
         invalidate();
