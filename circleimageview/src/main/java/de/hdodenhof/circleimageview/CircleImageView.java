@@ -73,8 +73,6 @@ public class CircleImageView extends ImageView {
 
     private Bitmap mBitmap;
     private BitmapShader mBitmapShader;
-    private int mBitmapWidth;
-    private int mBitmapHeight;
 
     private float mDrawableRadius;
     private float mBorderRadius;
@@ -397,9 +395,6 @@ public class CircleImageView extends ImageView {
         mCircleBackgroundPaint.setAntiAlias(true);
         mCircleBackgroundPaint.setColor(mCircleBackgroundColor);
 
-        mBitmapHeight = mBitmap.getHeight();
-        mBitmapWidth = mBitmap.getWidth();
-
         mBorderRect.set(calculateBounds());
         mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2.0f, (mBorderRect.width() - mBorderWidth) / 2.0f);
 
@@ -434,12 +429,15 @@ public class CircleImageView extends ImageView {
 
         mShaderMatrix.set(null);
 
-        if (mBitmapWidth * mDrawableRect.height() > mDrawableRect.width() * mBitmapHeight) {
-            scale = mDrawableRect.height() / (float) mBitmapHeight;
-            dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;
+        int bitmapHeight = mBitmap.getHeight();
+        int bitmapWidth = mBitmap.getWidth();
+
+        if (bitmapWidth * mDrawableRect.height() > mDrawableRect.width() * bitmapHeight) {
+            scale = mDrawableRect.height() / (float) bitmapHeight;
+            dx = (mDrawableRect.width() - bitmapWidth * scale) * 0.5f;
         } else {
-            scale = mDrawableRect.width() / (float) mBitmapWidth;
-            dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;
+            scale = mDrawableRect.width() / (float) bitmapWidth;
+            dy = (mDrawableRect.height() - bitmapHeight * scale) * 0.5f;
         }
 
         mShaderMatrix.setScale(scale, scale);
