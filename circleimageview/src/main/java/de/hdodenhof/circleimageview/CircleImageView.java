@@ -155,23 +155,23 @@ public class CircleImageView extends ImageView {
             return;
         }
 
-        if (mBitmap == null) {
-            return;
-        }
-
-        if (mRebuildShader) {
-            mRebuildShader = false;
-
-            BitmapShader bitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-            bitmapShader.setLocalMatrix(mShaderMatrix);
-
-            mBitmapPaint.setShader(bitmapShader);
-        }
-
         if (mCircleBackgroundColor != Color.TRANSPARENT) {
             canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mCircleBackgroundPaint);
         }
-        canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
+
+        if (mBitmap != null) {
+            if (mRebuildShader) {
+                mRebuildShader = false;
+
+                BitmapShader bitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+                bitmapShader.setLocalMatrix(mShaderMatrix);
+
+                mBitmapPaint.setShader(bitmapShader);
+            }
+
+            canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
+        }
+
         if (mBorderWidth > 0) {
             canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
         }
