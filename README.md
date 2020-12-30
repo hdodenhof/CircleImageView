@@ -57,7 +57,7 @@ There's currently no direct support for a circle bound selector but you can foll
 
 **How can I add a gap between image and border?**
 
-Adding a gap is also not support directly but [there's a workaround](https://github.com/hdodenhof/CircleImageView/issues/133#issuecomment-225437930).
+Adding a gap is also not supported directly but [there's a workaround](https://github.com/hdodenhof/CircleImageView/issues/133#issuecomment-225437930).
 
 Changelog
 ---------
