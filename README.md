@@ -5,6 +5,8 @@ A fast circular ImageView perfect for profile images. This is based on [RoundedI
 
 ![CircleImageView](https://raw.github.com/hdodenhof/CircleImageView/master/screenshot.png)
 
+[![Maintainability](https://cloud.quality-gate.com/dashboard/api/badge?projectName=hdodenhof_CircleImageView&branchName=master)](https://cloud.quality-gate.com/dashboard/branches/57427#overview)
+
 It uses a BitmapShader and **does not**:
 * create a copy of the original bitmap
 * use a clipPath (which is neither hardware accelerated nor anti-aliased)
