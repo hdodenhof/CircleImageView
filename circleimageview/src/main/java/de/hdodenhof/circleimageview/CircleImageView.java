@@ -48,8 +48,6 @@ import androidx.annotation.RequiresApi;
 @SuppressWarnings("UnusedDeclaration")
 public class CircleImageView extends ImageView {
 
-    private static final ScaleType SCALE_TYPE = ScaleType.FIT_CENTER;
-
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
     private static final int COLORDRAWABLE_DIMENSION = 2;
 
@@ -114,8 +112,6 @@ public class CircleImageView extends ImageView {
 
     private void init() {
         mInitialized = true;
-
-        super.setScaleType(SCALE_TYPE);
 
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setDither(true);
