@@ -138,13 +138,6 @@ public class CircleImageView extends ImageView {
     }
 
     @Override
-    public void setScaleType(ScaleType scaleType) {
-        if (scaleType != SCALE_TYPE) {
-            throw new IllegalArgumentException(String.format("ScaleType %s not supported.", scaleType));
-        }
-    }
-
-    @Override
     public void setAdjustViewBounds(boolean adjustViewBounds) {
         if (adjustViewBounds) {
             throw new IllegalArgumentException("adjustViewBounds not supported.");
